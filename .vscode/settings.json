@@ -1,0 +1,121 @@
+{
+  "todo-tree.filtering.excludeGlobs": ["**/.vscode/**"],
+  "todo-tree.general.tags": ["CHECKLIST", "REVIEW", "ERROR", "INFO"],
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "typescript": false,
+    "typescriptreact": false
+  },
+  "gitmoji.addCustomEmoji": [
+    {
+      "emoji": "✨",
+      "code": ":sparkles:",
+      "description": "feat: 새로운 기능 추가"
+    },
+    {
+      "emoji": "🩹",
+      "code": "",
+      "description": "fix: 단순 코드 수정"
+    },
+    {
+      "emoji": "🩹",
+      "code": "",
+      "description": "fix: 단순 코드 수정"
+    },
+    {
+      "emoji": "🐛",
+      "code": "",
+      "description": "bugfix: 버그 수정"
+    },
+    {
+      "emoji": "🚑",
+      "code": "",
+      "description": "hotfix: 긴급 오류 수정"
+    },
+    {
+      "emoji": "✅",
+      "code": "",
+      "description": "test: 테스트 코드 추가, 수정, 삭제 (비즈니스 로직 변경 없음)"
+    },
+    {
+      "emoji": "🐳",
+      "code": "",
+      "description": "chore: 분류하기 어려운 자잘한 수정 (빌드, 의존성, 설정 파일 수정 등)"
+    },
+    {
+      "emoji": "🔄",
+      "code": "",
+      "description": "revert: 커밋 복원"
+    },
+    {
+      "emoji": "💫",
+      "code": "",
+      "description": "merge: 브랜치 병합"
+    },
+    {
+      "emoji": "💄",
+      "code": "",
+      "description": "style: CSS 스타일 추가, 수정 (UI 변경)"
+    },
+    {
+      "emoji": "♿️",
+      "code": "",
+      "description": "ally: 웹 접근성 개선 (WCAG 가이드라인 준수)"
+    },
+    {
+      "emoji": "♻️",
+      "code": "",
+      "description": "refactor: 코드 리팩토링 (코드 동작 유지, 가독성 및 유지보수성 향상 목적)"
+    },
+    {
+      "emoji": "⚡️",
+      "code": "",
+      "description": "perf: 성능 개선 작업"
+    },
+    {
+      "emoji": "🏷️",
+      "code": "",
+      "description": "type: TypeScript 타입 정의 변경"
+    },
+    {
+      "emoji": "💬",
+      "code": "",
+      "description": "comment: 필요한 주석 추가 및 변경"
+    },
+    {
+      "emoji": "🔍️",
+      "code": "",
+      "description": "seo: 검색 엔진 최적화"
+    },
+    {
+      "emoji": "🎉",
+      "code": "",
+      "description": "init: 프로젝트 생성(후 사용 X)"
+    },
+    {
+      "emoji": "📝",
+      "code": "",
+      "description": "docs: 문서 추가/수정"
+    },
+    {
+      "emoji": "🎞",
+      "code": "",
+      "description": "src: 이미지, 아이콘 등 소스파일 추가 및 수정"
+    },
+    {
+      "emoji": "🛠",
+      "code": "",
+      "description": "rename: 파일 혹은 폴더명 수정 또는 이동"
+    },
+    {
+      "emoji": "🔥",
+      "code": "",
+      "description": "remove: 파일을 삭제하는 작업만 수행"
+    }
+  ],
+  "gitmoji.onlyUseCustomEmoji": true,
+  "gitmoji.asSuffix": true
+}
