@@ -1,31 +1,13 @@
-import { useEffect, useState } from 'react';
-import { app, db } from '../libs/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-
-interface dataType {
-  id: string;
-  title: string;
-  description: string;
-  imgPath: string;
-}
+import { usePhotos } from '../libs/api';
 
 export default function Home() {
-  console.log('연결완료', app);
-  const [data, setData] = useState<dataType>();
+  const { photos, loading, error } = usePhotos();
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>오류 발생: {error}</p>;
+  if (photos.length === 0) return <p>사진이 없습니다.</p>;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, 'Images'));
-      querySnapshot.forEach(doc => {
-        console.log(doc.id, ' => ', doc.data());
-        setData(doc.data() as dataType);
-      });
-    };
+  console.log(photos);
 
-    fetchData();
-  }, []);
-
-  console.log(data);
   return (
     <>
       <h1>홈 페이지 입니다.</h1>
