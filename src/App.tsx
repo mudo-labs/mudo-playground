@@ -1,10 +1,13 @@
-import { Link, Outlet } from "react-router-dom";
-import "./App.css";
+// import { Link, Outlet } from 'react-router-dom';
+import './App.css';
+import Footer from './components/layout/Footer';
+import Header from './components/layout/Header';
+import Home from './pages/Home';
 
 function App() {
   return (
     <>
-      <nav className="bg-white border-b">
+      {/* <nav className="bg-white border-b">
         <div className="container mx-auto flex h-14 items-center gap-6 px-4">
           <Link
             to="/"
@@ -35,7 +38,10 @@ function App() {
 
       <main className="container mx-auto p-6">
         <Outlet />
-      </main>
+      </main> */}
+      <Header />
+      <Home />
+      <Footer />
     </>
   );
 }

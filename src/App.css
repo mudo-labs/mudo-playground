@@ -2,34 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
-  /* 텍스트 사이즈 변수 설정 */
-  --text-*: initial;
-
-  --text-2xs: 0.625rem; /* 10px */
-  --text-xs: 0.75rem; /* 12px */
-  --text-sm: 0.875rem; /* 14px */
-  --text-base: 1rem; /* 16px */
-  --text-lg: 1.125rem; /* 18px */
-  --text-xl: 1.25rem; /* 20px */
-  --text-2xl: 1.375rem; /* 22px */
-  --text-3xl: 1.5rem; /* 24px */
-  --text-4xl: 1.75rem; /* 28px */
-  --text-5xl: 2rem; /* 32px */
-  --text-6xl: 2.25rem; /* 36px */
-  --text-7xl: 2.5rem; /* 40px */
-
-  /* breakpoint 설정*/
-  /* sm: ~ 767px / md: 768px ~ 1270px / lg: 1280px ~ */
-  --breakpoint-md: 48rem; /* 768px ~ 1279px */
-  --breakpoint-lg: 80rem; /* 1280px ~ */
-
-  /* 색상 변수 설정 */
-  --color-brown: #4c353f;
-  --color-dark-red: #b60108;
-  --color-light-gray: #bbbbbb;
-}
-
 /* Pretendard 폰트 */
 @font-face {
   font-family: 'Pretendard';
@@ -127,9 +99,32 @@ body {
   font-family: 'Pretendard', sans-serif;
 
   word-break: keep-all;
+  overflow-x: hidden;
 }
 
 /* Jaro 폰트 (영문) */
 .jaro {
   font-family: 'Jaro', sans-serif;
+}
+
+.view-box {
+  overflow: hidden; /* movingImgs가 바깥으로 나가도 스크롤 안 생기게 */
+  /* height: 100vh; pin 시 충분한 세로 공간 */
+  position: relative;
+}
+
+.mouse-ico > span {
+  animation: 1s ease mouseWheel infinite;
+}
+
+@keyframes mouseWheel {
+  0% {
+    top: 0.25rem;
+  }
+  50% {
+    top: 0.5rem;
+  }
+  100% {
+    top: 0.25rem;
+  }
 }
