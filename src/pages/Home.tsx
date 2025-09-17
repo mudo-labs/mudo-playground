@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import { useRef, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
@@ -214,6 +215,7 @@ export default function Home() {
         </div>
         {/* content */}
       </section>
+      <Outlet />
     </main>
   );
 }
