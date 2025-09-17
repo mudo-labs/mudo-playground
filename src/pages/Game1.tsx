@@ -61,12 +61,14 @@ export default function Game1() {
         </div>
         {/* 하단 버튼 섹션 */}
         <div className="flex justify-center mb-8">
-          <button
-            className="w-80 h-12 bg-[#E6E9D8] font-bold rounded-[12px] border-2 border-black"
-            onClick={handleStartGame}
-          >
-            퀴즈 출바알
-          </button>
+          <a href="/StartGame1">
+            <button
+              className="w-80 h-12 bg-[#E6E9D8] font-bold rounded-[12px] border-2 border-black"
+              onClick={handleStartGame}
+            >
+              퀴즈 출바알
+            </button>
+          </a>
         </div>
       </div>
     </>
