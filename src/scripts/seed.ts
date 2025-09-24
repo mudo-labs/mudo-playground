@@ -24,6 +24,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-002.png?raw=true',
     cast: ['정준하'],
     tags: ['웃김', '놀림', '디스'],
+    keyword: 'ㅇㄱㅁㅈㄹㅈㅁㅊㅎㅊㄱㅇ',
   },
   {
     title: '정신차려 이 각박한 세상속에서',
@@ -31,6 +32,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-003.png?raw=true',
     cast: ['하하'],
     tags: ['웃김', '경고', '설득', '자막짤'],
+    keyword: 'ㅈㅅㅊㄹㅇㄱㅂㅎㅅㅅㅅㅇㅅ',
   },
   {
     title: '지금 지쳤나요?',
@@ -38,6 +40,8 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-004.png?raw=true',
     cast: ['홍진경'],
     tags: ['웃김', '힘듦', '피곤', '자막짤'],
+
+    keyword: 'ㅈㄱㅈㅊㄴㅇ?',
   },
   {
     title: '사랑아, 보영해',
@@ -45,6 +49,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-005.png?raw=true',
     cast: ['정형돈', '일반인'],
     tags: ['웃김', '사랑', '자막짤'],
+    keyword: 'ㅅㄹㅇㅂㅇㅎ',
   },
   {
     title: '형이 왜 거기서 나와?',
@@ -52,6 +57,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-006.png?raw=true',
     cast: ['정형돈'],
     tags: ['웃김', '왜 거기서 나와', '당황', '자막짤'],
+    keyword: 'ㅎㅇㅇㄱㄱㅅㄴㅇ?',
   },
   {
     title: '출바알',
@@ -59,6 +65,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-007.png?raw=true',
     cast: ['박명수'],
     tags: ['출발', '여행', '자막짤'],
+    keyword: 'ㅊㅂㅇ',
   },
   {
     title: '정자룡이 간다 간다 뿅 간다',
@@ -66,6 +73,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-008.png?raw=true',
     cast: ['박명수', '정준하', '길'],
     tags: ['웃김', '가자', '자막짤'],
+    keyword: 'ㅈㅈㄹㅇㄱㄷㄱㄷㅃㄱㄷ',
   },
   {
     title: '늦었다고 생각할 때가 진짜 너무 늦었다',
@@ -73,6 +81,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-009.png?raw=true',
     cast: ['박명수'],
     tags: ['충고', '늦음', '공부', '지각'],
+    keyword: 'ㄴㅇㄷㄱㅅㄱㅎㄸㄱㅈㅉㄴㅁㄴㅇㄷ',
   },
   {
     title: '꿈은 없고요 그냥 놀고 싶습니다',
@@ -80,6 +89,7 @@ const dummyData = [
     imgPath: '',
     cast: ['무도멤버'],
     tags: ['지침', '공부', '놀자', '쉬자'],
+    keyword: 'ㄲㅇㅇㄱㅇㄱㄴㄴㄱㅅㅅㄴㄷ',
   },
   {
     title: '나 드러워서 못하겠네',
@@ -87,6 +97,7 @@ const dummyData = [
     imgPath: '',
     cast: ['박명수', '정준하'],
     tags: ['', '', ''],
+    keyword: 'ㄴㄷㄹㅇㅅㅁㅎㄱㄴ',
   },
   {
     title: '말 좀 제대로 해라',
@@ -94,6 +105,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-012.png?raw=true',
     cast: ['하하', '정형돈'],
     tags: ['', '', ''],
+    keyword: 'ㅁㅈㅈㄷㄹㅎㄹ',
   },
   {
     title: '일본 형돈이',
@@ -101,6 +113,7 @@ const dummyData = [
     imgPath: '',
     cast: ['정준하'],
     tags: ['', '', ''],
+    keyword: 'ㅇㅂㅎㄷㅇ',
   },
   {
     title: '유식해 보이는 무식한 답변',
@@ -108,6 +121,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-014.png?raw=true',
     cast: ['하하'],
     tags: ['', '', ''],
+    keyword: 'ㅇㅅㅎㅂㅇㄴㅁㅅㅎㄷㅂ',
   },
   {
     title: '아버지 나를 낳으시고 바지적삼 다적시셨네',
@@ -115,6 +129,7 @@ const dummyData = [
     imgPath: '',
     cast: ['정준하', '박명수', '유재석'],
     tags: ['', '', ''],
+    keyword: 'ㅇㅂㅈㄴㄹㄴㅇㅅㄱㅂㅈㅈㅅㄷㅈㅅㅅㄴ',
   },
   {
     title: '뱀이야 xx야',
@@ -122,6 +137,7 @@ const dummyData = [
     imgPath: '',
     cast: ['길', '정형돈'],
     tags: ['', '', ''],
+    keyword: 'ㅂㅇㅇXXㅇ',
   },
   {
     title: '점 오',
@@ -129,6 +145,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-017.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅈㅇ',
   },
   {
     title: '한머리 두냄새',
@@ -136,6 +153,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-018.png?raw=true',
     cast: ['유재석', '정형돈', '박명수', '하하', '정준하', '길'],
     tags: ['', '', ''],
+    keyword: 'ㅎㅁㄹㄷㄴㅅ',
   },
   {
     title: '간염에 걸렸을때 일어나지 못했더라면',
@@ -143,6 +161,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-019.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㄱㅇㅇㄱㄹㅇㄸㅇㅇㄴㅈㅁㅎㄷㄹㅁ',
   },
   {
     title: '이제는 더 이상 물러날 곳이 없다',
@@ -150,6 +169,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-020.png?raw=true',
     cast: ['정준하'],
     tags: ['', '', ''],
+    keyword: 'ㅇㅈㄴㄷㅇㅅㅁㄹㄴㄱㅇㅇㄷ',
   },
   {
     title: '형보다 잘할걸?',
@@ -157,6 +177,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-021.png?raw=true',
     cast: ['길'],
     tags: ['', '', ''],
+    keyword: 'ㅎㅂㄷㅈㅎㄱ?',
   },
   {
     title: '아유... 하기 싫어...',
@@ -164,6 +185,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-022.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅇㅇㅎㄱㅅㅇ',
   },
   {
     title: '참재밌다',
@@ -171,6 +193,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-023.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅊㅈㅁㄷ',
   },
   {
     title: '자 이게 클릭이야',
@@ -178,6 +201,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-024.png?raw=true',
     cast: ['노홍철', '하하'],
     tags: ['', '', ''],
+    keyword: 'ㅈㅇㄱㅋㄹㅇㅇ',
   },
   {
     title: '형이 모자라다고 말 함부로 하냐',
@@ -185,6 +209,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-025.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅎㅇㅁㅈㄹㄷㄱㅁㅎㅂㄹㅎㄴ',
   },
   {
     title: '그래도 하시겠습니까?',
@@ -192,6 +217,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-026.png?raw=true',
     cast: ['일반인'],
     tags: ['', '', ''],
+    keyword: 'ㄱㄹㄷㅎㅅㄱㅅㄴㄲ',
   },
   {
     title: '반갑다 x세대 여러분',
@@ -199,6 +225,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-027.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅂㄱㄷxㅅㄷㅇㄹㅂ',
   },
   {
     title: '무야호',
@@ -206,6 +233,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-028.png?raw=true',
     cast: ['일반인'],
     tags: ['', '', ''],
+    keyword: 'ㅁㅇㅎ',
   },
   {
     title: '더덩실 더덩실',
@@ -213,6 +241,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-029.png?raw=true',
     cast: ['유재석', '박명수'],
     tags: ['', '', ''],
+    keyword: 'ㄷㄷㅅㄷㄷㅅ',
   },
   {
     title: '지난번만 못하네요 어머님',
@@ -220,6 +249,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-030.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅈㄴㅂㅁㅁㅎㄴㅇㅇㅁㄴ',
   },
   {
     title: '법보다 가까운 주먹',
@@ -227,6 +257,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-031.png?raw=true',
     cast: ['박명수', '유재석', '정준하', '정형돈'],
     tags: ['', '', ''],
+    keyword: 'ㅂㅂㄷㄱㄲㅇㅈㅁ',
   },
   {
     title: '친구들아 고맙다',
@@ -234,6 +265,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-032.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅊㄱㄷㅇㄱㅁㄷ',
   },
   {
     title: '한번 고소당해야 정신 차리시겠습니까',
@@ -241,6 +273,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-033.png?raw=true',
     cast: ['박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅎㅂㄱㅅㄷㅎㅇㅈㅅㅊㄹㅅㄱㅅㄴㄲ',
   },
   {
     title: '홍철이 없는 홍철팀 탄생',
@@ -248,6 +281,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-034.png?raw=true',
     cast: ['길', '유재석', '정준하', '하하', '박명수'],
     tags: ['', '', ''],
+    keyword: 'ㅎㅊㅇㅇㄴㅎㅊㅌㅌㅅ',
   },
   {
     title: '족발 당수 워어어어',
@@ -255,6 +289,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-035.png?raw=true',
     cast: ['정형돈'],
     tags: ['', '', ''],
+    keyword: 'ㅈㅂㄷㅅㅇㅇㅇㅇ',
   },
   {
     title: '쯔왑 쯔왑',
@@ -262,6 +297,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-036.png?raw=true',
     cast: ['황광희'],
     tags: ['', '', ''],
+    keyword: 'ㅉㅇㅉㅇ',
   },
   {
     title: '너 왜 반말?',
@@ -269,6 +305,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-037.png?raw=true',
     cast: ['유병재'],
     tags: ['', '', ''],
+    keyword: 'ㄴㅇㅂㅁ?',
   },
   {
     title: '참... 좋다',
@@ -276,6 +313,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-038.png?raw=true',
     cast: ['정준하'],
     tags: ['', '', ''],
+    keyword: 'ㅊ...ㅈㄷ',
   },
   {
     title: '성희롱 당한 NO홍철',
@@ -283,6 +321,7 @@ const dummyData = [
     imgPath: 'https://github.com/jaehyun0620/mudo-images/blob/main/images/mudo-039.png?raw=true',
     cast: ['노홍철'],
     tags: ['', '', ''],
+    keyword: 'ㅅㅎㄹㄷㅎNOㅎㅊ',
   },
 ];
 
