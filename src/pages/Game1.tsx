@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
 const characters = [
-  { src: '/images/char/Gill.png', alt: '길' },
-  { src: '/images/char/Hyungdon.png', alt: '형돈' },
-  { src: '/images/char/JUNHA.png', alt: '준하' },
-  { src: '/images/char/Jaesuk.png', alt: '재석' },
-  { src: '/images/char/Myungsoo.png', alt: '명수' },
-  { src: '/images/char/HaHa.png', alt: '하하' },
-  { src: '/images/char/Hongchul.png', alt: '홍철' },
+  { src: '/images/char/gill.png', alt: '길' },
+  { src: '/images/char/hyeangdon.png', alt: '형돈' },
+  { src: '/images/char/junha.png', alt: '준하' },
+  { src: '/images/char/you.png', alt: '재석' },
+  { src: '/images/char/park.png', alt: '명수' },
+  { src: '/images/char/haha.png', alt: '하하' },
+  { src: '/images/char/nohong.png', alt: '홍철' },
 ];
 
 export default function Game1() {
@@ -46,16 +46,18 @@ export default function Game1() {
             <h1 className="text-[36px] text-center font-semibold">없는 게 없는 무도 게임</h1>
             <p className="text-[16px] text-center">선택한 캐릭터와 관련된 짤을 보고 정답을 맞혀보세요!</p>
           </div>
-          <div className="flex justify-center pl-2 pr-2 mt-16">
+          <div className="flex justify-center px-2 mt-16">
             {characters.map((char, i) => (
-              <img
+              <div
                 key={i}
-                className={`w-[48px] h-[93px] mx-1 transition-opacity duration-300 ${
+                className={`flex flex-col items-center mx-1 transition-opacity duration-300 ${
                   i === focusedIndex ? 'opacity-100' : 'opacity-40'
                 }`}
-                src={char.src}
-                alt={char.alt}
-              />
+              >
+                <img className="w-[46px] h-[100px]" src={char.src} alt={char.alt} />
+                {/* 캐릭터 이름을 표시하는 p 태그 추가 */}
+                <p className="mt-2 text-center text-sm font-bold">{char.alt}</p>
+              </div>
             ))}
           </div>
         </div>

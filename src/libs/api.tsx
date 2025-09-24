@@ -9,6 +9,7 @@ export interface Images {
   title: string;
   tags: [];
   cast: [];
+  keyword: string;
 }
 
 export function usePhotos() {
