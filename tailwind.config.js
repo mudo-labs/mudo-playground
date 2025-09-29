@@ -20,14 +20,17 @@ export default {
       },
       screens: {
         // break point 설정
-        // sm: ~ 767px / md: 768px ~ 1270px / lg: 1280px ~ //
+        // sm: ~ 767px / md: 768px ~ 1270px / lg: 1280px ~
         md: '768px', // 768px ~ 1279px
-        lg: '1280px', // 1280px ~
+        lg: '1280px', // 1280px ~ 1919px
+        xl: '1920px', // 1920px ~
       },
       colors: {
         brown: '#4c353f',
         'dark-red': '#b60108',
         'light-gray': '#bbbbbb',
+        'light-gray2': '#d9d9d9',
+        'light-yellow': '#E6E9D8',
       },
     },
   },
