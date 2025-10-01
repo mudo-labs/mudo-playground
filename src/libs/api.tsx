@@ -7,8 +7,8 @@ export interface Images {
   id: string;
   imgPath: string;
   title: string;
-  tags: [];
-  cast: [];
+  tags: string[];
+  cast: string[];
   keyword: string;
 }
 
