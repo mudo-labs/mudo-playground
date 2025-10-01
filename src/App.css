@@ -113,6 +113,7 @@ body {
   position: relative;
 }
 
+/* Home 에서 마우스 아이콘 움직이는 애니메이션 */
 .mouse-ico > span {
   animation: 1s ease mouseWheel infinite;
 }
@@ -126,5 +127,22 @@ body {
   }
   100% {
     top: 0.25rem;
+  }
+}
+
+/* 짤 순서 맞추기 게임에서 멤버 선택 깜박이는 애니메이션*/
+.blink {
+  animation: 1.3s ease blink infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

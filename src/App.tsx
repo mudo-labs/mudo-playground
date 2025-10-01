@@ -7,7 +7,7 @@ import Header from './components/layout/Header';
 function App() {
   return (
     <>
-      <main>
+      <main className="w-full min-h-dvh">
         <Header />
         <Outlet />
         <Footer />
