@@ -1,17 +1,23 @@
+import { useSetAtom } from 'jotai';
 import { useState, useEffect } from 'react';
+import { selectedCharaterAtom } from '../atoms/characterStore';
+import { useNavigate } from 'react-router-dom';
 
 const characters = [
-  { src: '/images/char/gill.png', alt: '길' },
-  { src: '/images/char/hyeangdon.png', alt: '형돈' },
-  { src: '/images/char/junha.png', alt: '준하' },
-  { src: '/images/char/you.png', alt: '재석' },
-  { src: '/images/char/park.png', alt: '명수' },
-  { src: '/images/char/haha.png', alt: '하하' },
-  { src: '/images/char/nohong.png', alt: '홍철' },
+  { src: '/images/char/Gill.png', alt: '길' },
+  { src: '/images/char/hyeangdon.png', alt: '정형돈' },
+  { src: '/images/char/JUNHA.png', alt: '정준하' },
+  { src: '/images/char/you.png', alt: '유재석' },
+  { src: '/images/char/park.png', alt: '박명수' },
+  { src: '/images/char/HaHa.png', alt: '하하' },
+  { src: '/images/char/nohong.png', alt: '노홍철' },
 ];
 
 export default function Game1() {
   const [focusedIndex, setFocusedIndex] = useState(3);
+
+  const setSelectedCharacter = useSetAtom(selectedCharaterAtom);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -31,7 +37,8 @@ export default function Game1() {
 
   const handleStartGame = () => {
     const selectedCharacter = characters[focusedIndex].alt;
-    alert(`선택된 캐릭터: ${selectedCharacter}!\n퀴즈를 시작합니다.`);
+    setSelectedCharacter(selectedCharacter);
+    navigate('/StartGame1');
   };
 
   return (
@@ -63,14 +70,12 @@ export default function Game1() {
         </div>
         {/* 하단 버튼 섹션 */}
         <div className="flex justify-center mb-8">
-          <a href="/StartGame1">
-            <button
-              className="w-80 h-12 bg-[#E6E9D8] font-bold rounded-[12px] border-2 border-black"
-              onClick={handleStartGame}
-            >
-              퀴즈 출바알
-            </button>
-          </a>
+          <button
+            className="w-80 h-12 bg-[#E6E9D8] font-bold rounded-[12px] border-2 border-black"
+            onClick={handleStartGame}
+          >
+            퀴즈 출바알
+          </button>
         </div>
       </div>
     </>
