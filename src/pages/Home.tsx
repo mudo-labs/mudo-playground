@@ -79,6 +79,9 @@ export default function Home() {
 
     // 네 번째 시점: circle 사라지고 content 등장
     tl.add([
+      tl.to(content, {
+        display: 'flex',
+      }),
       gsap.to(content, {
         opacity: 1,
         zIndex: 10,
@@ -122,8 +125,12 @@ export default function Home() {
     }
   };
 
+  window.addEventListener('resize', () => {
+    ScrollTrigger.refresh();
+  });
+
   return (
-    <main className="view-box relative w-dvw h-dvh flex items-center bg-[url('/main-bg.jpg')] bg-cover text-white">
+    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/main-bg.jpg')] bg-center bg-cover text-white">
       {/* moving-imgs */}
       <div className="moving-imgs">
         <div className="flex flex-nowrap gap-[25%] items-center">
@@ -164,7 +171,7 @@ export default function Home() {
         </div>
         {/* circle */}
         {/* content */}
-        <div className="content absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw h-dvh flex justify-center items-center opacity-0 bg-white -z-10 text-black">
+        <div className="content hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw h-dvh justify-center items-center opacity-0 bg-white -z-10 text-black">
           <a href={link} className="text-center">
             <h3
               ref={contentNameRef}
@@ -183,7 +190,7 @@ export default function Home() {
             ></li>
             <li
               data-content-name="컨텐츠 2"
-              data-content-url="javascript:void(0)"
+              data-content-url="/sequenceHome"
               onClick={changeTitle}
               className="absolute top-1/2 left-1/2 translate-x-[50%] -translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-45deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[100%] md:-translate-y-[190%] md:w-[9.375rem] lg:translate-x-[80%] lg:-translate-y-[215%] lg:w-[12.5rem]"
             ></li>
@@ -216,6 +223,6 @@ export default function Home() {
         {/* content */}
       </section>
       <Outlet />
-    </main>
+    </div>
   );
 }
