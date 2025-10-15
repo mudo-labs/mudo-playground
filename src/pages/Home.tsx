@@ -9,14 +9,23 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const contentNameRef = useRef<HTMLHeadingElement>(null);
   useGSAP(() => {
-    const logo = document.querySelector('.logo > img');
-    const footer = document.querySelector('.footer');
-    const viewBox = document.querySelector('.view-box');
-    const movingImgs = document.querySelector('.moving-imgs');
-    const circle = document.querySelector('.circle');
-    const mouseIcon = document.querySelector('.mouse-ico');
-    const mouseWheel = document.querySelector('.mouse-ico > span');
-    const content = document.querySelector('.content');
+    const logo = document.querySelector('.logo > img') as HTMLImageElement;
+    const footer = document.querySelector('.footer') as HTMLElement;
+    const viewBox = document.querySelector('.view-box') as HTMLElement;
+    const movingImgs = document.querySelector('.moving-imgs') as HTMLElement;
+    const circle = document.querySelector('.circle') as HTMLElement;
+    const mouseIcon = document.querySelector('.mouse-ico') as HTMLElement;
+    const mouseWheel = document.querySelector('.mouse-ico > span') as HTMLElement;
+    const content = document.querySelector('.content') as HTMLElement;
+
+    if (logo) {
+      logo.setAttribute('src', '/logo-ready-white.png');
+    }
+
+    if (footer) {
+      footer.style.position = 'fixed';
+      footer.style.color = 'white';
+    }
 
     // 타임라인 생성(이벤트가 순차적으로 일어나게 하기 위해서)
     const tl = gsap.timeline({
