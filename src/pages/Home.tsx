@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import { useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
@@ -172,7 +173,7 @@ export default function Home() {
         {/* circle */}
         {/* content */}
         <div className="content hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw h-dvh justify-center items-center opacity-0 bg-white -z-10 text-black">
-          <a href={link} className="text-center">
+          <Link to={link} className="text-center">
             <h3
               ref={contentNameRef}
               className="jaro text-7xl font-black text-dark-red md:text-[3.125rem] lg:text-[3.75rem]"
@@ -180,7 +181,7 @@ export default function Home() {
               {contentTitle}
             </h3>
             <p className="mt-1.5  text-light-gray md:text-lg lg:mt-3 lg:text-xl">당신의 경험에 무(모)한도전</p>
-          </a>
+          </Link>
           <ul className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <li
               data-content-name="없는게 없는 무도 게임"
@@ -189,7 +190,7 @@ export default function Home() {
               className="absolute top-1/2 left-1/2 -translate-x-[78%] -translate-y-[330%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-md cursor-pointer md:-translate-y-[215%] md:w-[9.375rem] lg:-translate-x-[185%] lg:-translate-y-[170%] lg:w-[12.5rem]"
             ></li>
             <li
-              data-content-name="컨텐츠 2"
+              data-content-name="무도 짤 순서 맞추기 게임"
               data-content-url="/sequenceHome"
               onClick={changeTitle}
               className="absolute top-1/2 left-1/2 translate-x-[50%] -translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-45deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[100%] md:-translate-y-[190%] md:w-[9.375rem] lg:translate-x-[80%] lg:-translate-y-[215%] lg:w-[12.5rem]"
