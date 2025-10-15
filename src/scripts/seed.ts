@@ -555,7 +555,7 @@ const dummyData = [
     keyword: '',
     episodeNum: 368,
     episodeDate: '2월',
-    episodeName: '탐정',
+    episodeName: '무도 탐정 사무소',
   },
   {
     title: '한계임박',
