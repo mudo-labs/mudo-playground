@@ -114,7 +114,7 @@ export default function SequenceGame() {
   }, [picNum, filteredPhotos]);
 
   return (
-    <div className="mx-auto min-h-dvh w-full px-4 pt-[100px] pb-[40px] md:py-[150px] md:px-8 lg:px-0 lg:py-[170px] lg:max-w-[68.75rem] xl:max-w-[120rem]">
+    <div className="mx-auto min-h-dvh w-full px-4 pt-[80px] pb-[40px] md:pt-[150px] md:pb-[70px] md:px-8 lg:px-0 lg:pt-[170px] lg:pb-[100px] lg:max-w-[68.75rem] xl:max-w-[120rem]">
       <SequenceGameRound round={round} />
       <SequenceGameQuiz isSolving={isSolving} currentPhotos={currentPhotos} />
       <SequenceGameAnswer

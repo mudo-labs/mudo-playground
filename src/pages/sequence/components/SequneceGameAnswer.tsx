@@ -33,7 +33,7 @@ export default function SequenceGameAnswer({
             ref={inputRef}
             defaultValue={submitAnswer.current}
             onChange={e => (submitAnswer.current = e.target.value)}
-            className="border border-black w-[300px] h-[38px] text-xs px-3 md:w-[340px] md:h-[44px] md:px-4 md:text-sm lg:w-[360px] lg:h-12 lg:text-base"
+            className="border border-black w-[300px] h-[38px] text-xs px-3 rounded-xl md:w-[340px] md:h-[44px] md:px-4 md:text-sm lg:w-[360px] lg:h-12 lg:text-base"
             placeholder="순서에 맞게 숫자만 입력해주세요. ex)123"
             maxLength={3}
           />
@@ -42,7 +42,7 @@ export default function SequenceGameAnswer({
           </Button>
         </div>
       ) : !isSolving && round === 5 ? (
-        <div className="flex flex-col items-center gap-3 mt-5 md:gap-4 md:mt-16 lg:mt-20 lg:gap-6">
+        <div className="flex flex-col items-center gap-3 mt-5 md:gap-4 md:mt-12 lg:mt-16 lg:gap-6">
           <p className="text-xs md:text-sm lg:text-base">{isCorrect ? '정답!' : '오답!'}</p>
           <strong className="text-xs md:text-sm lg:text-base">
             {answerNum[0]} -&gt; {answerNum[1]} -&gt; {answerNum[2]}
@@ -52,7 +52,7 @@ export default function SequenceGameAnswer({
           </CustomLink>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-3 mt-5 md:gap-4 md:mt-16 lg:mt-20 lg:gap-6">
+        <div className="flex flex-col items-center gap-3 mt-5 md:gap-4 md:mt-12 lg:mt-16 lg:gap-6">
           <p className="text-xs md:text-sm lg:text-base">{isCorrect ? '정답!' : '오답!'}</p>
           <strong className="text-xs md:text-sm lg:text-base">
             {answerNum[0]} -&gt; {answerNum[1]} -&gt; {answerNum[2]}
