@@ -17,7 +17,7 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
               <img
                 src={item.imgPath}
                 alt={`${i + 1}번 문제 사진`}
-                className="max-h-[150px] md:max-h-[207px] lg:max-h-[264px] xl:max-h-[424px]"
+                className="max-h-[9.375rem] md:max-h-[12.9375rem] lg:max-h-[16.5rem] xl:max-h-[26.5rem]"
               />
               <span className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-center content-center bg-dark-red font-medium text-white text-xs md:w-6 md:h-6 md:text-sm lg:w-7 lg:h-7 lg:text-base">
                 {i + 1}
@@ -36,7 +36,7 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
               <img
                 src={item.imgPath}
                 alt={`${i + 1}번 문제 사진`}
-                className="max-h-[150px] md:max-h-[207px] lg:max-h-[264px] xl:max-h-[424px]"
+                className="max-h-[9.375rem] md:max-h-[12.9375rem] lg:max-h-[16.5rem] xl:max-h-[26.5rem]"
               />
               <span className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-center content-center bg-dark-red font-medium text-white text-xs md:w-6 md:h-6 md:text-sm lg:w-7 lg:h-7 lg:text-base">
                 {i + 1}
@@ -54,7 +54,7 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
     }
   });
   return (
-    <ul className="flex flex-col items-stretch justify-between gap-[16px] md:flex-row md:gap-[30px] mt-[32px] md:mt-[60px] md:h-[280px] lg:gap-[40px] lg:mt-20 lg:h-[340px] xl:h-[500px]">
+    <ul className="flex flex-col items-stretch justify-between gap-4 md:flex-row md:gap-[2rem] mt-8 md:mt-[3.75rem] md:h-[17.5rem] lg:gap-10 lg:mt-20 lg:h-[21.25rem] xl:h-[31.25rem]">
       {quizList}
     </ul>
   );

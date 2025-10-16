@@ -19,8 +19,7 @@ export default function SequenceGame() {
   const location = useLocation();
   const selectedChar: string = location.state.selectedChar; // SequenceHome 에서 선택된 멤버
 
-  const { photos, loading, error } = usePhotos(); // 데이터 불러오기
-  console.log(loading, error);
+  const { photos } = usePhotos(); // 데이터 불러오기
   const [picNum, setPicNum] = useState(0); // 필터링 된 데이터 몇부터 몇까지 자를지 상태
 
   // 선택된 멤버로 데이터 필터링 후 shuffle로 랜덤하게 섞기
@@ -28,7 +27,6 @@ export default function SequenceGame() {
     const f = photos?.filter(photo => photo.cast.includes(selectedChar)) ?? [];
     return shuffle(f);
   }, [photos, selectedChar]);
-  console.log('filteredPhotos', filteredPhotos);
 
   let currentPhotos: Images[] = filteredPhotos.slice(picNum, picNum + 3); // 필터링된 데이터에서 보여줄 사진 3개 자르기
 
@@ -67,15 +65,11 @@ export default function SequenceGame() {
       return currentPhotos.findIndex(c => c.episodeNum === item.episodeNum) + 1;
     })
     .join('');
-  console.log('answer', answer);
-  console.log('answerNum', answerNum);
 
   const [round, setRound] = useState(1); // 현재 라운드
   const [isSolving, setIsSolving] = useState(true); // 문제 푸는 중인지 (true면 문제 푸는중, false면 답변 제출 상태)
   const [isCorrect, setIsCorrect] = useState(true); // 맞았는지 틀렸는지
-  console.log(isCorrect);
   const [correctNum, setCorrectNum] = useState(0); // 몇개 맞았는지
-  console.log('correctNum', correctNum);
 
   const submitAnswer = useRef<string>(''); // 답변 input 내용
   const inputRef = useRef<HTMLInputElement | null>(null); // input DOM 관리
@@ -114,7 +108,7 @@ export default function SequenceGame() {
   }, [picNum, filteredPhotos]);
 
   return (
-    <div className="mx-auto min-h-dvh w-full px-4 pt-[80px] pb-[40px] md:pt-[150px] md:pb-[70px] md:px-8 lg:px-0 lg:pt-[170px] lg:pb-[100px] lg:max-w-[68.75rem] xl:max-w-[120rem]">
+    <div className="mx-auto min-h-dvh w-full px-4 pt-[5rem] pb-[2.5rem] md:pt-[9.375rem] md:pb-[4.375rem] md:px-8 lg:px-0 lg:pt-[10.625rem] lg:pb-[6.25rem] lg:max-w-[68.75rem] xl:max-w-[120rem]">
       <SequenceGameRound round={round} />
       <SequenceGameQuiz isSolving={isSolving} currentPhotos={currentPhotos} />
       <SequenceGameAnswer

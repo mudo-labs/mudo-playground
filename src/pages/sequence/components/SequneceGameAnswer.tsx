@@ -27,13 +27,13 @@ export default function SequenceGameAnswer({
   return (
     <>
       {isSolving ? (
-        <div className="flex justify-center items-center mt-[40px] gap-5 md:mt-[100px] md:gap-6 lg:mt-[9.375rem] lg:gap-7.5">
+        <div className="flex justify-center items-center mt-10 gap-5 md:mt-[6.25rem] md:gap-6 lg:mt-[9.375rem] lg:gap-7.5">
           <input
             type="text"
             ref={inputRef}
             defaultValue={submitAnswer.current}
             onChange={e => (submitAnswer.current = e.target.value)}
-            className="border border-black w-[300px] h-[38px] text-xs px-3 rounded-xl md:w-[340px] md:h-[44px] md:px-4 md:text-sm lg:w-[360px] lg:h-12 lg:text-base"
+            className="border border-black w-[18.75rem] h-[2.375rem] text-xs px-3 rounded-xl md:w-[21.25rem] md:h-[2.75rem] md:px-4 md:text-sm lg:w-[22.5rem] lg:h-12 lg:text-base"
             placeholder="순서에 맞게 숫자만 입력해주세요. ex)123"
             maxLength={3}
           />

@@ -4,7 +4,6 @@ import CustomLink from '../../components/ui/CustomLink';
 export default function SequenceEnd() {
   const location = useLocation();
   const { correctNum }: { correctNum: number } = location.state; // 넘겨받은 정답 맞춘 수
-  console.log('correctNum', correctNum);
 
   let resultText: string; // 점수에 따라 보여지는 텍스트
   let resultImgSrc: string; // 점수에 따라 보여지는 이미지 src
@@ -34,8 +33,8 @@ export default function SequenceEnd() {
       resultImgSrc = 'images/sequence/result-img-0.jpg';
   }
   return (
-    <div className="mx-auto min-h-dvh flex flex-col justify-center items-center gap-[30px] md:gap-[40px] w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] lg:gap-[3.125rem] xl:max-w-[120rem]">
-      <img src={resultImgSrc} alt="결과 이미지" className="max-h-[400px] md:max-h-[450px] lg:max-h-[31.25rem]" />
+    <div className="mx-auto min-h-dvh flex flex-col justify-center items-center gap-[1.875rem] md:gap-[2.5rem] w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] lg:gap-[3.125rem] xl:max-w-[120rem]">
+      <img src={resultImgSrc} alt="결과 이미지" className="max-h-[25rem] md:max-h-[28.125rem] lg:max-h-[31.25rem]" />
       <div className="text-center">
         <strong className="font-normal lg:text-xl">
           5문제 중 <span className="font-bold text-dark-red">{correctNum}개</span> 맞혔습니다.

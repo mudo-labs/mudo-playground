@@ -138,9 +138,9 @@ export default function Home() {
       if (winW < 768) {
         contentNameRef.current.style.fontSize = '2rem';
       } else if (winW < 1280) {
-        contentNameRef.current.style.fontSize = '40px';
+        contentNameRef.current.style.fontSize = '2.5rem';
       } else {
-        contentNameRef.current.style.fontSize = '50px';
+        contentNameRef.current.style.fontSize = '3.125rem';
       }
     }
   };
@@ -177,7 +177,7 @@ export default function Home() {
 
       <section className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         {/* circle */}
-        <div className="circle flex flex-col justify-center items-center w-[21.25rem] aspect-square rounded-full bg-[rgba(124,124,124,0.3)] z-20 md:w-[480px] lg:w-[37.5rem]">
+        <div className="circle flex flex-col justify-center items-center w-[21.25rem] aspect-square rounded-full bg-[rgba(124,124,124,0.3)] z-20 md:w-[30rem] lg:w-[37.5rem]">
           <div className="text-center">
             <p className="text-4xl font-bold md:text-5xl lg:text-[2.5rem]">당신이 찾는 무도</p>
             <h2 className="jaro text-[3.75rem] md:text-[4.375rem] lg:text-[5rem]">ALL MUDO</h2>
