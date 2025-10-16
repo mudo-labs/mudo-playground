@@ -121,10 +121,18 @@ export default function Home() {
 
   const changeTitle = (e: React.MouseEvent<HTMLElement>) => {
     const winW = window.innerWidth;
+    const contentList = document.querySelectorAll('.content ul li');
     // title 내부 글자 상태 변환
     setContentTitle(`${e.currentTarget.dataset.contentName}`);
     setContentLink(`${e.currentTarget.dataset.contentUrl}`);
 
+    contentList.forEach(li => {
+      if (e.currentTarget === li) {
+        li.classList.add('active');
+      } else {
+        li.classList.remove('active');
+      }
+    });
     // 영문 -> 한글로 바뀌면서 폰트가 커지기때문에 각 분기점에 따라 한글 폰트 사이즈 줄여줌.
     if (contentNameRef.current) {
       if (winW < 768) {
@@ -156,7 +164,7 @@ export default function Home() {
             <img src={homeMovingImage(7)} alt="배경 이미지" className="max-w-none" />
           </div>
         </div>
-        <div className="mt-[15%] flex flex-nowrap gap-[25%] items-center">
+        <div className="mt-[21vh] flex flex-nowrap gap-[25%] items-center">
           <img src={homeMovingImage(8)} alt="배경 이미지" />
           <img src={homeMovingImage(9)} alt="배경 이미지" />
           <img src={homeMovingImage(10)} alt="배경 이미지" />
@@ -191,44 +199,30 @@ export default function Home() {
             >
               {contentTitle}
             </h3>
-            <p className="mt-1.5  text-light-gray md:text-lg lg:mt-3 lg:text-xl">당신의 경험에 무(모)한도전</p>
+            {contentTitle === 'Infinite Challenge' ? (
+              <p className="mt-1.5 text-light-gray md:text-lg lg:mt-3 lg:text-xl">당신의 경험에 무(모)한도전</p>
+            ) : (
+              <p className="mt-1.5 md:text-lg lg:mt-3 lg:text-xl">Click Here!!</p>
+            )}
           </Link>
           <ul className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <li
               data-content-name="없는게 없는 무도 게임"
               data-content-url="/game1"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 -translate-x-[78%] -translate-y-[330%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-md cursor-pointer md:-translate-y-[215%] md:w-[9.375rem] lg:-translate-x-[185%] lg:-translate-y-[170%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 -translate-x-[150%] translate-y-[70%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-xl cursor-pointer md:-translate-x-[220%] md:translate-y-[30%] md:w-[9.375rem] lg:-translate-x-[280%] lg:-translate-y-[20%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
             <li
               data-content-name="무도 짤 순서 맞추기 게임"
               data-content-url="/sequenceHome"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 translate-x-[50%] -translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-45deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[100%] md:-translate-y-[190%] md:w-[9.375rem] lg:translate-x-[80%] lg:-translate-y-[215%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 translate-x-[50%] translate-y-[105%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-20deg] bg-[url('/thumbnail-2.jpg')] bg-cover shadow-xl cursor-pointer md:translate-x-[130%] md:translate-y-[65%] md:w-[9.375rem] lg:translate-x-[170%] lg:translate-y-[10%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
             <li
               data-content-name="컨텐츠 3"
               data-content-url="javascript:void(0)"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 -translate-x-[150%] -translate-y-[190%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-light-gray shadow-md cursor-pointer md:-translate-x-[235%] md:-translate-y-[150%] md:w-[9.375rem] lg:-translate-x-[325%] lg:-translate-y-1/2 lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 4"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] translate-x-[70%] translate-y-[80%] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-22deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[125%] md:translate-y-[65%] md:w-[9.375rem] lg:translate-x-[210%] lg:-translate-y-[75%] lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 5"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] -translate-x-[165%] translate-y-[130%] aspect-square rounded-[1.25rem] skew-y-[-4deg] bg-light-gray shadow-md cursor-pointer md:-translate-x-[185%] md:translate-y-[85%] md:w-[9.375rem] lg:-translate-x-[160%] lg:translate-y-[110%] lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 6"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] -translate-x-[15%] translate-y-[220%] aspect-square rounded-[1.25rem] skew-y-[6deg] bg-light-gray shadow-md cursor-pointer md:translate-y-[125%] md:w-[9.375rem] lg:translate-x-[65%] lg:translate-y-[70%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 -translate-x-[65%] translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[6deg] skew-y-[8deg] bg-light-gray shadow-xl cursor-pointer md:-translate-x-[52%] md:translate-y-[120%] md:w-[9.375rem] lg:-translate-x-[72%] lg:translate-y-[62%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
           </ul>
         </div>
