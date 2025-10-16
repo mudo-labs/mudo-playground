@@ -2,16 +2,18 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import { useRef, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import { homeMovingImage } from '../util/homeMovingImage';
 
 gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
+  const location = useLocation();
+
   const contentNameRef = useRef<HTMLHeadingElement>(null);
   useGSAP(() => {
-    const logo = document.querySelector('.logo > img') as HTMLImageElement;
+    const logo = document.querySelector('.logo img') as HTMLImageElement;
     const footer = document.querySelector('.footer') as HTMLElement;
     const viewBox = document.querySelector('.view-box') as HTMLElement;
     const movingImgs = document.querySelector('.moving-imgs') as HTMLElement;
@@ -20,10 +22,9 @@ export default function Home() {
     const mouseWheel = document.querySelector('.mouse-ico > span') as HTMLElement;
     const content = document.querySelector('.content') as HTMLElement;
 
-    if (logo) {
-      logo.setAttribute('src', '/logo-ready-white.png');
-    }
+    if (location.pathname !== '/') return;
 
+    if (logo) logo.setAttribute('src', '/logo-ready-white.png');
     if (footer) {
       footer.style.position = 'fixed';
       footer.style.color = 'white';
@@ -113,7 +114,18 @@ export default function Home() {
         duration: 0,
       }),
     ]);
-  }, []);
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      tl.kill();
+
+      if (logo) logo.setAttribute('src', '/logo-go-brown.png');
+      if (footer) {
+        footer.style.position = 'absolute';
+        footer.style.color = 'black';
+      }
+    };
+  }, [location.pathname]);
 
   // 컨텐츠 박스 클릭하면 바뀌는 title 영역 상태
   const [contentTitle, setContentTitle] = useState('Infinite Challenge');
