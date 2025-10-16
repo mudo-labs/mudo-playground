@@ -5,6 +5,8 @@ import { useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import { homeMovingImage } from '../util/homeMovingImage';
+
 gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const contentNameRef = useRef<HTMLHeadingElement>(null);
@@ -140,27 +142,27 @@ export default function Home() {
   });
 
   return (
-    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/main-bg.jpg')] bg-center bg-cover text-white">
+    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/src/assets/home/main-bg.jpg')] bg-center bg-cover text-white">
       {/* moving-imgs */}
       <div className="moving-imgs">
         <div className="flex flex-nowrap gap-[25%] items-center">
-          <img src="moving-img-1.jpg" alt="배경 이미지" />
-          <img src="moving-img-2.jpg" alt="배경 이미지" />
-          <img src="moving-img-3.jpg" alt="배경 이미지" />
-          <img src="moving-img-4.jpg" alt="배경 이미지" />
-          <img src="moving-img-5.jpg" alt="배경 이미지" />
+          <img src={homeMovingImage(1)} alt="배경 이미지" />
+          <img src={homeMovingImage(2)} alt="배경 이미지" />
+          <img src={homeMovingImage(3)} alt="배경 이미지" />
+          <img src={homeMovingImage(4)} alt="배경 이미지" />
+          <img src={homeMovingImage(5)} alt="배경 이미지" />
           <div className="flex flex-col items-end gap-[3.375rem] ">
-            <img src="moving-img-6.jpg" alt="배경 이미지" className="max-w-none" />
-            <img src="moving-img-7.jpg" alt="배경 이미지" className="max-w-none" />
+            <img src={homeMovingImage(6)} alt="배경 이미지" className="max-w-none" />
+            <img src={homeMovingImage(7)} alt="배경 이미지" className="max-w-none" />
           </div>
         </div>
         <div className="mt-[15%] flex flex-nowrap gap-[25%] items-center">
-          <img src="moving-img-8.jpg" alt="배경 이미지" />
-          <img src="moving-img-9.jpg" alt="배경 이미지" />
-          <img src="moving-img-10.jpg" alt="배경 이미지" />
-          <img src="moving-img-11.png" alt="배경 이미지" />
-          <img src="moving-img-12.jpg" alt="배경 이미지" />
-          <img src="moving-img-13.jpg" alt="배경 이미지" />
+          <img src={homeMovingImage(8)} alt="배경 이미지" />
+          <img src={homeMovingImage(9)} alt="배경 이미지" />
+          <img src={homeMovingImage(10)} alt="배경 이미지" />
+          <img src={homeMovingImage(11)} alt="배경 이미지" />
+          <img src={homeMovingImage(12)} alt="배경 이미지" />
+          <img src={homeMovingImage(13)} alt="배경 이미지" />
         </div>
       </div>
       {/* moving-imgs */}
