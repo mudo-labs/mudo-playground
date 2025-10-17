@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <>
-      <ul className="footer fixed right-4 bottom-4 flex gap-3 text-xs text-white md:right-8 md:bottom-8 md:text-sm lg:right-[3.75rem] lg:bottom-[3.125rem] lg:text-base">
+      <ul className="footer absolute right-4 bottom-4 flex gap-3 text-xs text-black md:right-8 md:bottom-8 md:text-sm lg:right-[3.75rem] lg:bottom-[3.125rem] lg:text-base">
         <li className="relative after:absolute after:top-[20%] after:right-[-0.375rem] after:w-[0.0625rem] after:h-[60%] after:bg-current">
           <a href="https://github.com/mudo-labs/mudo-playground" target="_blank" title="ALLMUDO 깃허브 링크 새창열림">
             ALLMUDO

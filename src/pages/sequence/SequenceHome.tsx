@@ -13,7 +13,6 @@ export default function SequenceHome() {
     const clickedChar = e.currentTarget.textContent || '';
     setSelectedChar(clickedChar);
   };
-  console.log(selectedChar);
 
   return (
     <div className="mx-auto min-h-dvh flex flex-col justify-center items-center w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] xl:max-w-[120rem]">

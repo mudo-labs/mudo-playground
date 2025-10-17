@@ -2,20 +2,33 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import { useRef, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import { homeMovingImage } from '../util/homeMovingImage';
 
 gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
+  const location = useLocation();
+
   const contentNameRef = useRef<HTMLHeadingElement>(null);
   useGSAP(() => {
-    const logo = document.querySelector('.logo > img');
-    const footer = document.querySelector('.footer');
-    const viewBox = document.querySelector('.view-box');
-    const movingImgs = document.querySelector('.moving-imgs');
-    const circle = document.querySelector('.circle');
-    const mouseIcon = document.querySelector('.mouse-ico');
-    const mouseWheel = document.querySelector('.mouse-ico > span');
-    const content = document.querySelector('.content');
+    const logo = document.querySelector('.logo img') as HTMLImageElement;
+    const footer = document.querySelector('.footer') as HTMLElement;
+    const viewBox = document.querySelector('.view-box') as HTMLElement;
+    const movingImgs = document.querySelector('.moving-imgs') as HTMLElement;
+    const circle = document.querySelector('.circle') as HTMLElement;
+    const mouseIcon = document.querySelector('.mouse-ico') as HTMLElement;
+    const mouseWheel = document.querySelector('.mouse-ico > span') as HTMLElement;
+    const content = document.querySelector('.content') as HTMLElement;
+
+    if (location.pathname !== '/') return;
+
+    if (logo) logo.setAttribute('src', '/logo-ready-white.png');
+    if (footer) {
+      footer.style.position = 'fixed';
+      footer.style.color = 'white';
+    }
 
     // 타임라인 생성(이벤트가 순차적으로 일어나게 하기 위해서)
     const tl = gsap.timeline({
@@ -101,7 +114,18 @@ export default function Home() {
         duration: 0,
       }),
     ]);
-  }, []);
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      tl.kill();
+
+      if (logo) logo.setAttribute('src', '/logo-go-brown.png');
+      if (footer) {
+        footer.style.position = 'absolute';
+        footer.style.color = 'black';
+      }
+    };
+  }, [location.pathname]);
 
   // 컨텐츠 박스 클릭하면 바뀌는 title 영역 상태
   const [contentTitle, setContentTitle] = useState('Infinite Challenge');
@@ -109,18 +133,26 @@ export default function Home() {
 
   const changeTitle = (e: React.MouseEvent<HTMLElement>) => {
     const winW = window.innerWidth;
+    const contentList = document.querySelectorAll('.content ul li');
     // title 내부 글자 상태 변환
     setContentTitle(`${e.currentTarget.dataset.contentName}`);
     setContentLink(`${e.currentTarget.dataset.contentUrl}`);
 
+    contentList.forEach(li => {
+      if (e.currentTarget === li) {
+        li.classList.add('active');
+      } else {
+        li.classList.remove('active');
+      }
+    });
     // 영문 -> 한글로 바뀌면서 폰트가 커지기때문에 각 분기점에 따라 한글 폰트 사이즈 줄여줌.
     if (contentNameRef.current) {
       if (winW < 768) {
         contentNameRef.current.style.fontSize = '2rem';
       } else if (winW < 1280) {
-        contentNameRef.current.style.fontSize = '40px';
+        contentNameRef.current.style.fontSize = '2.5rem';
       } else {
-        contentNameRef.current.style.fontSize = '50px';
+        contentNameRef.current.style.fontSize = '3.125rem';
       }
     }
   };
@@ -130,34 +162,34 @@ export default function Home() {
   });
 
   return (
-    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/main-bg.jpg')] bg-center bg-cover text-white">
+    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/src/assets/home/main-bg.jpg')] bg-center bg-cover text-white">
       {/* moving-imgs */}
       <div className="moving-imgs">
         <div className="flex flex-nowrap gap-[25%] items-center">
-          <img src="moving-img-1.jpg" alt="배경 이미지" />
-          <img src="moving-img-2.jpg" alt="배경 이미지" />
-          <img src="moving-img-3.jpg" alt="배경 이미지" />
-          <img src="moving-img-4.jpg" alt="배경 이미지" />
-          <img src="moving-img-5.jpg" alt="배경 이미지" />
+          <img src={homeMovingImage(1)} alt="배경 이미지" />
+          <img src={homeMovingImage(2)} alt="배경 이미지" />
+          <img src={homeMovingImage(3)} alt="배경 이미지" />
+          <img src={homeMovingImage(4)} alt="배경 이미지" />
+          <img src={homeMovingImage(5)} alt="배경 이미지" />
           <div className="flex flex-col items-end gap-[3.375rem] ">
-            <img src="moving-img-6.jpg" alt="배경 이미지" className="max-w-none" />
-            <img src="moving-img-7.jpg" alt="배경 이미지" className="max-w-none" />
+            <img src={homeMovingImage(6)} alt="배경 이미지" className="max-w-none" />
+            <img src={homeMovingImage(7)} alt="배경 이미지" className="max-w-none" />
           </div>
         </div>
-        <div className="mt-[15%] flex flex-nowrap gap-[25%] items-center">
-          <img src="moving-img-8.jpg" alt="배경 이미지" />
-          <img src="moving-img-9.jpg" alt="배경 이미지" />
-          <img src="moving-img-10.jpg" alt="배경 이미지" />
-          <img src="moving-img-11.png" alt="배경 이미지" />
-          <img src="moving-img-12.jpg" alt="배경 이미지" />
-          <img src="moving-img-13.jpg" alt="배경 이미지" />
+        <div className="mt-[21vh] flex flex-nowrap gap-[25%] items-center">
+          <img src={homeMovingImage(8)} alt="배경 이미지" />
+          <img src={homeMovingImage(9)} alt="배경 이미지" />
+          <img src={homeMovingImage(10)} alt="배경 이미지" />
+          <img src={homeMovingImage(11)} alt="배경 이미지" />
+          <img src={homeMovingImage(12)} alt="배경 이미지" />
+          <img src={homeMovingImage(13)} alt="배경 이미지" />
         </div>
       </div>
       {/* moving-imgs */}
 
       <section className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         {/* circle */}
-        <div className="circle flex flex-col justify-center items-center w-[21.25rem] aspect-square rounded-full bg-[rgba(124,124,124,0.3)] z-20 md:w-[480px] lg:w-[37.5rem]">
+        <div className="circle flex flex-col justify-center items-center w-[21.25rem] aspect-square rounded-full bg-[rgba(124,124,124,0.3)] z-20 md:w-[30rem] lg:w-[37.5rem]">
           <div className="text-center">
             <p className="text-4xl font-bold md:text-5xl lg:text-[2.5rem]">당신이 찾는 무도</p>
             <h2 className="jaro text-[3.75rem] md:text-[4.375rem] lg:text-[5rem]">ALL MUDO</h2>
@@ -172,51 +204,37 @@ export default function Home() {
         {/* circle */}
         {/* content */}
         <div className="content hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw h-dvh justify-center items-center opacity-0 bg-white -z-10 text-black">
-          <a href={link} className="text-center">
+          <Link to={link} className="text-center">
             <h3
               ref={contentNameRef}
               className="jaro text-7xl font-black text-dark-red md:text-[3.125rem] lg:text-[3.75rem]"
             >
               {contentTitle}
             </h3>
-            <p className="mt-1.5  text-light-gray md:text-lg lg:mt-3 lg:text-xl">당신의 경험에 무(모)한도전</p>
-          </a>
+            {contentTitle === 'Infinite Challenge' ? (
+              <p className="mt-1.5 text-light-gray md:text-lg lg:mt-3 lg:text-xl">당신의 경험에 무(모)한도전</p>
+            ) : (
+              <p className="mt-1.5 md:text-lg lg:mt-3 lg:text-xl">Click Here!!</p>
+            )}
+          </Link>
           <ul className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <li
               data-content-name="없는게 없는 무도 게임"
               data-content-url="/game1"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 -translate-x-[78%] -translate-y-[330%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-md cursor-pointer md:-translate-y-[215%] md:w-[9.375rem] lg:-translate-x-[185%] lg:-translate-y-[170%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 -translate-x-[150%] translate-y-[70%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-xl cursor-pointer md:-translate-x-[220%] md:translate-y-[30%] md:w-[9.375rem] lg:-translate-x-[280%] lg:-translate-y-[20%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
             <li
-              data-content-name="컨텐츠 2"
+              data-content-name="무도 짤 순서 맞추기 게임"
               data-content-url="/sequenceHome"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 translate-x-[50%] -translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-45deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[100%] md:-translate-y-[190%] md:w-[9.375rem] lg:translate-x-[80%] lg:-translate-y-[215%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 translate-x-[50%] translate-y-[105%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-20deg] bg-[url('/thumbnail-2.jpg')] bg-cover shadow-xl cursor-pointer md:translate-x-[130%] md:translate-y-[65%] md:w-[9.375rem] lg:translate-x-[170%] lg:translate-y-[10%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
             <li
               data-content-name="컨텐츠 3"
               data-content-url="javascript:void(0)"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 -translate-x-[150%] -translate-y-[190%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-light-gray shadow-md cursor-pointer md:-translate-x-[235%] md:-translate-y-[150%] md:w-[9.375rem] lg:-translate-x-[325%] lg:-translate-y-1/2 lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 4"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] translate-x-[70%] translate-y-[80%] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-22deg] bg-light-gray shadow-md cursor-pointer md:translate-x-[125%] md:translate-y-[65%] md:w-[9.375rem] lg:translate-x-[210%] lg:-translate-y-[75%] lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 5"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] -translate-x-[165%] translate-y-[130%] aspect-square rounded-[1.25rem] skew-y-[-4deg] bg-light-gray shadow-md cursor-pointer md:-translate-x-[185%] md:translate-y-[85%] md:w-[9.375rem] lg:-translate-x-[160%] lg:translate-y-[110%] lg:w-[12.5rem]"
-            ></li>
-            <li
-              data-content-name="컨텐츠 6"
-              data-content-url="javascript:void(0)"
-              onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 w-[6.25rem] -translate-x-[15%] translate-y-[220%] aspect-square rounded-[1.25rem] skew-y-[6deg] bg-light-gray shadow-md cursor-pointer md:translate-y-[125%] md:w-[9.375rem] lg:translate-x-[65%] lg:translate-y-[70%] lg:w-[12.5rem]"
+              className="absolute top-1/2 left-1/2 -translate-x-[65%] translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[6deg] skew-y-[8deg] bg-light-gray shadow-xl cursor-pointer md:-translate-x-[52%] md:translate-y-[120%] md:w-[9.375rem] lg:-translate-x-[72%] lg:translate-y-[62%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
           </ul>
         </div>
