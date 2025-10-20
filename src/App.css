@@ -130,6 +130,17 @@ body {
   }
 }
 
+/* 홈의 컨텐츠 블럭 움직임 */
+.content > ul li.active {
+  transform: skewX(0) skewY(0) translate(-50%, -180%);
+}
+
+@media (min-width: 1280px) {
+  .content > ul li.active {
+    transform: skewX(0) skewY(0) translate(-50%, -160%);
+  }
+}
+
 /* 짤 순서 맞추기 게임에서 멤버 선택 깜박이는 애니메이션*/
 .blink {
   animation: 1.3s ease blink infinite;

@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const members: string[] = ['길', '정형돈', '정준하', '유재석', '박명수', '하하', '노홍철'];
+import Button from '../../components/ui/Button';
+import SequenceHomeText from './components/SequenceHomeText';
+import SequenceHomeMember from './components/SequenceHomeMember';
 
 export default function SequenceHome() {
   const navigate = useNavigate();
@@ -12,67 +13,25 @@ export default function SequenceHome() {
     const clickedChar = e.currentTarget.textContent || '';
     setSelectedChar(clickedChar);
   };
-  console.log(selectedChar);
-
-  const memberList = useMemo(() => {
-    return members.map((member: string, i: number) =>
-      selectedChar === member ? (
-        <li
-          key={i}
-          className="
-          relative cursor-pointer
-          font-bold before:absolute before:-top-10 before:left-1/2 before:-translate-x-1/2 lg:before:w-[1.875rem] lg:before:h-[2.125rem]
-          before:bg-[url('/images/char/mudori_f.png')] before:bg-cover"
-          onClick={onClickChar}
-        >
-          {member}
-        </li>
-      ) : (
-        <li
-          key={i}
-          className="
-          relative cursor-pointer
-          hover:font-bold hover:before:absolute hover:before:-top-10 hover:before:left-1/2 hover:before:-translate-x-1/2 lg:hover:before:w-[1.875rem] lg:hover:before:h-[2.125rem]
-          hover:before:bg-[url('/images/char/mudori_f.png')] hover:before:bg-cover"
-          onClick={onClickChar}
-        >
-          {member}
-        </li>
-      ),
-    );
-  }, [selectedChar]);
 
   return (
-    // inner
-    <div className="mx-auto min-h-dvh flex flex-col justify-center items-center lg:max-w-[68.75rem] xl:max-w-[120rem]">
-      <div className="text-center">
-        <h2 className="font-bold lg:text-[3.75rem]">무도 짤 순서 맞추기 게임</h2>
-        <p className="leading-[1.6] lg:mt-6 lg:text-xl">
-          화면의 보여지는 짤들을 회차 순으로 정렬해보세요!
-          <br />
-          (오래된 회차 -&gt; 최신 회차)
-        </p>
-      </div>
-      <div className="relative lg:mt-[8.75rem]">
-        <ul className="flex  lg:gap-6 lg:text-xl">{memberList}</ul>
-        <p className="blink absolute translate-x-full -translate-y-full font-bold text-dark-red before:absolute before:bottom-0 before:-translate-x-full before:translate-y-full before:w-[32px] before:h-[60px] before:rotate-45 before:bg-[url('/images/sequence/ico_select_arrow.png')] before:bg-cover lg:-top-[100px] lg:-right-[100px] lg:text-3xl lg:before:left-2 ">
-          멤버 선택!
-        </p>
-      </div>
-
-      <button
+    <div className="mx-auto min-h-dvh flex flex-col justify-center items-center w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] xl:max-w-[120rem]">
+      <SequenceHomeText />
+      <SequenceHomeMember onClickChar={onClickChar} selectedChar={selectedChar} />
+      <Button
         type="button"
-        className="border-[0.125rem] border-black rounded-xl font-bold bg-light-yellow lg:mt-[7.5rem] lg:px-[4.375rem] lg:py-3.5 lg:text-2xl"
+        size="lg"
+        className="mt-[5rem] md:mt-[6.25rem] lg:mt-[7.5rem]"
         onClick={() => {
           if (selectedChar === '') {
-            alert('a');
+            alert('멤버를 선택해주세요!');
           } else {
             navigate('/sequenceGame', { state: { selectedChar } });
           }
         }}
       >
         순서 맞추기 출바알
-      </button>
+      </Button>
     </div>
   );
 }

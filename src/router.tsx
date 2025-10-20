@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound';
 import Test from './pages/test';
 import StartGame1 from './pages/StartGame1';
 import SequenceGame from './pages/sequence/SequenceGame';
+import SequenceEnd from './pages/sequence/SequenceEnd';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: 'game1', element: <Game1 /> },
       { path: 'sequenceHome', element: <SequenceHome /> },
       { path: 'sequenceGame', element: <SequenceGame /> },
+      { path: 'sequenceEnd', element: <SequenceEnd /> },
       { path: 'game3', element: <Game3 /> },
       { path: 'test', element: <Test /> },
       { path: 'StartGame1', element: <StartGame1 /> },
