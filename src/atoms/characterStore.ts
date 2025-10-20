@@ -1,3 +1,3 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
-export const selectedCharaterAtom = atom<string | null>(null);
+export const selectedCharaterAtom = atomWithStorage<string | null>('selectedCharacter', null);
