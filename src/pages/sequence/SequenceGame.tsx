@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import SequenceGameRound from './components/SequenceGameRound';
 import SequenceGameQuiz from './components/SequenceGameQuiz';
 import SequenceGameAnswer from './components/SequneceGameAnswer';
+import LoadingSequenceGameQuiz from './components/LoadingSequenceGameQuiz';
 
 // 배열 랜덤으로 섞기
 function shuffle<T>(array: T[]): T[] {
@@ -19,7 +20,19 @@ export default function SequenceGame() {
   const location = useLocation();
   const selectedChar: string = location.state.selectedChar; // SequenceHome 에서 선택된 멤버
 
-  const { photos } = usePhotos(); // 데이터 불러오기
+  const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩중 상태
+
+  const { photos, loading } = usePhotos(); // 데이터 불러오기
+
+  useEffect(() => {
+    // 로딩중 상태 변경
+    if (loading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [loading]);
+
   const [picNum, setPicNum] = useState(0); // 필터링 된 데이터 몇부터 몇까지 자를지 상태
 
   // 선택된 멤버로 데이터 필터링 후 shuffle로 랜덤하게 섞기
@@ -110,7 +123,11 @@ export default function SequenceGame() {
   return (
     <div className="mx-auto min-h-dvh w-full px-4 pt-[5rem] pb-[2.5rem] md:pt-[9.375rem] md:pb-[4.375rem] md:px-8 lg:px-0 lg:pt-[10.625rem] lg:pb-[6.25rem] lg:max-w-[68.75rem] xl:max-w-[120rem]">
       <SequenceGameRound round={round} />
-      <SequenceGameQuiz isSolving={isSolving} currentPhotos={currentPhotos} />
+      {isLoading ? (
+        <LoadingSequenceGameQuiz />
+      ) : (
+        <SequenceGameQuiz isSolving={isSolving} currentPhotos={currentPhotos} />
+      )}
       <SequenceGameAnswer
         isSolving={isSolving}
         isCorrect={isCorrect}

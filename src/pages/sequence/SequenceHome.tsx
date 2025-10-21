@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/ui/Button';
 import SequenceHomeText from './components/SequenceHomeText';
 import SequenceHomeMember from './components/SequenceHomeMember';
+import useModal from '../../hooks/useModal';
 
 export default function SequenceHome() {
   const navigate = useNavigate();
@@ -14,21 +15,27 @@ export default function SequenceHome() {
     setSelectedChar(clickedChar);
   };
 
+  const { openModal, Modal } = useModal();
+
+  const onClickStartButton = () => {
+    if (selectedChar === '') {
+      openModal('잠깐! 멤버를 선택해주세요!');
+    } else {
+      navigate('/sequenceGame', { state: { selectedChar } });
+    }
+  };
+
   return (
-    <div className="mx-auto min-h-dvh flex flex-col justify-center items-center w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] xl:max-w-[120rem]">
+    <div className="relative mx-auto min-h-dvh flex flex-col justify-center items-center w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] xl:max-w-[120rem]">
       <SequenceHomeText />
       <SequenceHomeMember onClickChar={onClickChar} selectedChar={selectedChar} />
+      <Modal />
       <Button
         type="button"
+        styling="normal"
         size="lg"
         className="mt-[5rem] md:mt-[6.25rem] lg:mt-[7.5rem]"
-        onClick={() => {
-          if (selectedChar === '') {
-            alert('멤버를 선택해주세요!');
-          } else {
-            navigate('/sequenceGame', { state: { selectedChar } });
-          }
-        }}
+        onClick={onClickStartButton}
       >
         순서 맞추기 출바알
       </Button>
