@@ -165,7 +165,6 @@ export default function StartGame1() {
   const selectedCharacter = useAtomValue(selectedCharaterAtom);
   const { photos, loading, error } = usePhotos();
 
-  // photos 로딩 완료되면 map에 itemId 랜덤 배치
   useEffect(() => {
     // 새로고침 시 selectedCharacter가 없을 경우 대비
     if (!photos.length || !selectedCharacter) return;
@@ -191,38 +190,32 @@ export default function StartGame1() {
     setCurrentMap(newMap);
   }, [photos, selectedCharacter]);
 
-  // 모달 닫기 핸들러 (아이템을 path로 변경하고 상태 초기화)
   const handleCloseModal = () => {
     if (selectedItemId) {
-      // 정답/오답 여부와 관계없이 아이템을 'path'로 변경
       const newMap = currentMap.map(row =>
         row.map(cell => (cell.itemId === selectedItemId ? ({ type: 'path' } as Tile) : cell)),
       );
       setCurrentMap(newMap);
 
-      // 오답으로 인해 닫히는 경우인지 확인
       if (isAnswerRevealed) {
         const newProgressCount = progressCount + 1;
         setProgressCount(newProgressCount);
 
-        // 오답으로 닫혔을 때 게임이 끝났는지 확인
         if (newProgressCount === TOTAL_QUESTIONS) {
           setShowGameOverModal(true);
         }
       }
     }
 
-    // 모달 상태 초기화
     setShowModal(false);
     setSelectedItemId(null);
     setInputValue('');
     setFeedbackMessage('');
-    setIsAnswerRevealed(false); // 상태 리셋
+    setIsAnswerRevealed(false);
   };
 
-  // 정답 확인 로직 (정답/오답 분기 처리)
   const handleAnswerCheck = () => {
-    if (!selectedItemId || isAnswerRevealed) return; // 중복 확인 방지
+    if (!selectedItemId || isAnswerRevealed) return;
 
     const selectedQuestion = photos.find(p => p.id === selectedItemId);
     if (!selectedQuestion) return;
@@ -234,31 +227,28 @@ export default function StartGame1() {
         .replace(/[.,!?'"()]/g, '');
 
     if (normalize(inputValue) === normalize(selectedQuestion.title)) {
-      // [정답일 경우]
       setFeedbackMessage('정답입니다!');
 
       const newCount = correctCount + 1;
-      setCorrectCount(newCount); //  최종 점수 카운트
+      setCorrectCount(newCount);
 
       const newProgressCount = progressCount + 1;
-      setProgressCount(newProgressCount); //  진행도 카운트
+      setProgressCount(newProgressCount);
 
-      // 마지막 문제인지 확인 (진행도 기준)
       if (newProgressCount === TOTAL_QUESTIONS) {
         setTimeout(() => {
-          handleCloseModal(); // 현재 질문 모달 닫기
-          setShowGameOverModal(true); // 게임 종료 모달 띄우기
+          handleCloseModal();
+          setShowGameOverModal(true);
         }, 1000);
       } else {
-        setTimeout(handleCloseModal, 1000); // 다음 문제 위해 모달 닫기
+        setTimeout(handleCloseModal, 1000);
       }
     } else {
-      // [오답일 경우]
       setFeedbackMessage('오답입니다.');
-      setIsAnswerRevealed(true); // 정답 공개 및 '닫기' 버튼 활성화
+      setIsAnswerRevealed(true);
     }
   };
-  // 모달이 열릴 때 input에 자동 포커스
+
   useEffect(() => {
     if (showModal) {
       setTimeout(() => {
@@ -267,14 +257,13 @@ export default function StartGame1() {
     }
   }, [showModal]);
 
-  // Enter 키로 정답 확인 또는 닫기
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       if (isAnswerRevealed) {
-        handleCloseModal(); // 오답이 공개된 상태면 Enter로 모달 닫기
+        handleCloseModal();
       } else {
-        handleAnswerCheck(); // 아니면 정답 확인
+        handleAnswerCheck();
       }
     }
   };
@@ -282,7 +271,6 @@ export default function StartGame1() {
   // 캐릭터 이동 로직 (키보드 이벤트)
   useEffect(() => {
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      // 모달이 떠 있을 때는 이동 방지
       if (moving || showModal || showGameOverModal) return;
       const dir = directions[e.key];
       if (!dir) return;
@@ -326,7 +314,6 @@ export default function StartGame1() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [position, moving, showModal, showGameOverModal, currentMap]);
 
-  // 로딩 및 에러 처리
   if (loading)
     return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-white p-4">
@@ -335,16 +322,15 @@ export default function StartGame1() {
         <div className="text-2xl font-bold text-gray-700 animate-pulse">게임을 불러오는 중입니다...</div>
       </div>
     );
+
   if (error)
     return (
       <div className="flex justify-center items-center min-h-screen text-red-500">데이터 로딩에 실패했습니다.</div>
     );
 
-  // 맵 렌더링
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4">
       {/* 타이틀 및 진행도 */}
-
       <h2 className="text-3xl font-bold text-gray-800 mb-2 tracking-tight">없는게 없는 무도 게임</h2>
       <div className="text-lg font-semibold text-gray-600 mb-4">
         <span>진행 정도 : </span>
@@ -357,7 +343,7 @@ export default function StartGame1() {
         className="relative w-full max-w-lg mx-auto border-2 border-black overflow-hidden rounded-md"
         style={{ aspectRatio: `${initialMap[0].length} / ${initialMap.length}` }}
       >
-        {/* 맵 타일 렌더 */}
+        {/* 맵 타일 렌더링 부분 */}
         {currentMap.map((row, y) =>
           row.map((cell, x) => (
             <div
@@ -404,7 +390,7 @@ export default function StartGame1() {
               <img
                 src={photos.find(p => p.id === selectedItemId)?.imgPath}
                 alt="짤 이미지"
-                className="w-full object-contain rounded-md border border-gray-200" // ◀ rounded-md, border 추가
+                className="w-full object-contain rounded-md border border-gray-200"
               />
               <p
                 className={`text-base font-bold min-h-[1.5rem] ${
@@ -429,7 +415,7 @@ export default function StartGame1() {
                   .map((char, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-center w-8 h-8 border-gray-300 border p-2 text-black font-bold text-lg shadow-sm rounded-md" // ◀ 스타일 수정
+                      className="flex items-center justify-center w-8 h-8 border-gray-300 border p-2 text-black font-bold text-lg shadow-sm rounded-md"
                     >
                       {char}
                     </div>
@@ -440,7 +426,7 @@ export default function StartGame1() {
                 ref={inputRef}
                 onKeyDown={handleInputKeyDown}
                 disabled={isAnswerRevealed} // 오답 시 input 비활성화
-                className="w-full p-3 px-4 border-2 border-gray-300 rounded-lg disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all" // ◀ 스타일 및 focus 효과 추가
+                className="w-full p-3 px-4 border-2 border-gray-300 rounded-lg disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                 type="text"
                 placeholder="정답을 입력해 주세요"
                 value={inputValue}
@@ -451,14 +437,14 @@ export default function StartGame1() {
               {!isAnswerRevealed ? (
                 <button
                   onClick={handleAnswerCheck}
-                  className="bg-[#E6E9D8] text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-800 hover:bg-yellow-200 active:bg-yellow-300 transition-colors" // ◀ text-[20px] -> text-xl, py-2 -> py-3, hover/active 효과 추가
+                  className="bg-[#E6E9D8] text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-800 hover:bg-yellow-200 active:bg-yellow-300 transition-colors"
                 >
                   정답확인
                 </button>
               ) : (
                 <button
                   onClick={handleCloseModal}
-                  className="bg-gray-300 text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-500 hover:bg-gray-400 active:bg-gray-500 transition-colors" // ◀ text-[20px] -> text-xl, py-2 -> py-3, hover/active 효과 추가
+                  className="bg-gray-300 text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-500 hover:bg-gray-400 active:bg-gray-500 transition-colors"
                 >
                   닫기
                 </button>
@@ -488,13 +474,13 @@ export default function StartGame1() {
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
                 <button
                   onClick={() => window.location.reload()}
-                  className="w-full sm:w-32 bg-gray-300 font-bold py-2 px-4 rounded-lg border-2 border-gray-500 hover:bg-gray-400 transition-colors" // ◀ transition-colors 추가
+                  className="w-full sm:w-32 bg-gray-300 font-bold py-2 px-4 rounded-lg border-2 border-gray-500 hover:bg-gray-400 transition-colors"
                 >
                   다시하기
                 </button>
                 <button
                   onClick={() => navigate('/')}
-                  className="w-full sm:w-32 bg-[#E6E9D8] font-bold py-2 px-4 rounded-lg border-2 border-black hover:bg-yellow-100 transition-colors" // ◀ transition-colors 추가
+                  className="w-full sm:w-32 bg-[#E6E9D8] font-bold py-2 px-4 rounded-lg border-2 border-black hover:bg-yellow-100 transition-colors"
                 >
                   홈으로 가기
                 </button>

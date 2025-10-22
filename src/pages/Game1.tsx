@@ -62,13 +62,13 @@ export default function Game1() {
                 }`}
               >
                 <img className="w-[46px] h-[100px]" src={char.src} alt={char.alt} />
-                {/* 캐릭터 이름을 표시하는 p 태그 추가 */}
+
                 <p className="mt-2 text-center text-sm font-bold">{char.alt}</p>
               </div>
             ))}
           </div>
         </div>
-        {/* 하단 버튼 섹션 */}
+
         <div className="flex justify-center mb-8">
           <button
             className="w-80 h-12 bg-[#E6E9D8] font-bold rounded-[12px] border-2 border-black"
