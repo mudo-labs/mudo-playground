@@ -157,3 +157,15 @@ body {
     opacity: 1;
   }
 }
+
+@layer utilities {
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(-5%);
+    }
+    50% {
+      transform: translateY(8%);
+    }
+  }
+}

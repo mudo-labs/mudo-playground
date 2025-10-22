@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePhotos } from '../libs/api';
 import { selectedCharaterAtom } from '../atoms/characterStore';
 import { useAtomValue } from 'jotai';
+import { useNavigate } from 'react-router-dom';
 
 type Tile = {
   type: 'path' | 'wall' | 'item';
   itemId?: string;
+  itemImgPath?: string;
 };
 
 // 초기 맵
@@ -129,6 +131,16 @@ const directions: Record<string, [number, number]> = {
   ArrowRight: [1, 0],
 };
 
+const TOTAL_QUESTIONS = 5;
+
+const ITEM_IMAGE_PATHS = [
+  '/images/logo/Frame-1.png',
+  '/images/logo/Frame-2.png',
+  '/images/logo/Frame-3.png',
+  '/images/logo/Frame-4.png',
+  '/images/logo/Frame-5.png',
+];
+
 export default function StartGame1() {
   const [position, setPosition] = useState<[number, number]>([0, 10]);
   const [offset, setOffset] = useState<[number, number]>([0, 0]);
@@ -140,28 +152,36 @@ export default function StartGame1() {
   const [inputValue, setInputValue] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState('');
 
+  const [correctCount, setCorrectCount] = useState(0);
+  const [progressCount, setProgressCount] = useState(0);
+  const [showGameOverModal, setShowGameOverModal] = useState(false);
+
+  // 오답 시 정답 공개를 위한 상태
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
+
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const selectedCharacter = useAtomValue(selectedCharaterAtom);
-  console.log('selected_Char : ', selectedCharacter);
   const { photos, loading, error } = usePhotos();
 
-  // photos 로딩 완료되면 map에 itemId 랜덤 배치
   useEffect(() => {
-    if (!photos.length) return;
+    // 새로고침 시 selectedCharacter가 없을 경우 대비
+    if (!photos.length || !selectedCharacter) return;
 
     const newMap = currentMap.map(row => [...row]);
 
-    console.log(photos.filter(p => p.cast.includes(selectedCharacter as string)));
-
     const selectedPhotos = photos
-      .filter(p => p.cast.includes(selectedCharacter as string))
+      .filter(p => p.cast.includes(selectedCharacter))
       .sort(() => Math.random() - 0.5)
-      .slice(0, 5);
+      .slice(0, TOTAL_QUESTIONS);
 
     let itemIndex = 0;
     for (let y = 0; y < newMap.length; y++) {
       for (let x = 0; x < newMap[y].length; x++) {
         if (newMap[y][x].type === 'item' && selectedPhotos[itemIndex]) {
           newMap[y][x].itemId = selectedPhotos[itemIndex].id;
+          newMap[y][x].itemImgPath = ITEM_IMAGE_PATHS[itemIndex];
           itemIndex++;
         }
       }
@@ -170,23 +190,33 @@ export default function StartGame1() {
     setCurrentMap(newMap);
   }, [photos, selectedCharacter]);
 
-  console.log(currentMap);
-
   const handleCloseModal = () => {
     if (selectedItemId) {
       const newMap = currentMap.map(row =>
         row.map(cell => (cell.itemId === selectedItemId ? ({ type: 'path' } as Tile) : cell)),
       );
       setCurrentMap(newMap);
+
+      if (isAnswerRevealed) {
+        const newProgressCount = progressCount + 1;
+        setProgressCount(newProgressCount);
+
+        if (newProgressCount === TOTAL_QUESTIONS) {
+          setShowGameOverModal(true);
+        }
+      }
     }
+
     setShowModal(false);
     setSelectedItemId(null);
     setInputValue('');
     setFeedbackMessage('');
+    setIsAnswerRevealed(false);
   };
 
   const handleAnswerCheck = () => {
-    if (!selectedItemId) return;
+    if (!selectedItemId || isAnswerRevealed) return;
+
     const selectedQuestion = photos.find(p => p.id === selectedItemId);
     if (!selectedQuestion) return;
 
@@ -198,15 +228,50 @@ export default function StartGame1() {
 
     if (normalize(inputValue) === normalize(selectedQuestion.title)) {
       setFeedbackMessage('정답입니다!');
-      setTimeout(handleCloseModal, 1000);
+
+      const newCount = correctCount + 1;
+      setCorrectCount(newCount);
+
+      const newProgressCount = progressCount + 1;
+      setProgressCount(newProgressCount);
+
+      if (newProgressCount === TOTAL_QUESTIONS) {
+        setTimeout(() => {
+          handleCloseModal();
+          setShowGameOverModal(true);
+        }, 1000);
+      } else {
+        setTimeout(handleCloseModal, 1000);
+      }
     } else {
-      setFeedbackMessage('오답입니다. 다시 시도해 보세요.');
+      setFeedbackMessage('오답입니다.');
+      setIsAnswerRevealed(true);
     }
   };
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (moving || showModal) return;
+    if (showModal) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [showModal]);
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (isAnswerRevealed) {
+        handleCloseModal();
+      } else {
+        handleAnswerCheck();
+      }
+    }
+  };
+
+  // 캐릭터 이동 로직 (키보드 이벤트)
+  useEffect(() => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (moving || showModal || showGameOverModal) return;
       const dir = directions[e.key];
       if (!dir) return;
 
@@ -235,6 +300,7 @@ export default function StartGame1() {
           setOffset([0, 0]);
           setPosition([newX, newY]);
 
+          // 아이템 타일 도착 시 모달 띄우기
           if (nextTile.type === 'item' && nextTile.itemId) {
             setSelectedItemId(nextTile.itemId);
             setShowModal(true);
@@ -246,35 +312,59 @@ export default function StartGame1() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [position, moving, showModal, currentMap]);
+  }, [position, moving, showModal, showGameOverModal, currentMap]);
 
   if (loading)
-    return <div className="flex justify-center items-center min-h-screen">문제 데이터를 불러오는 중입니다...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen bg-white p-4">
+        <img src="/wait.png" alt="로딩 중 짤" className="w-80 max-w-full mb-8 rounded-lg shadow-md" />
+
+        <div className="text-2xl font-bold text-gray-700 animate-pulse">게임을 불러오는 중입니다...</div>
+      </div>
+    );
+
   if (error)
     return (
       <div className="flex justify-center items-center min-h-screen text-red-500">데이터 로딩에 실패했습니다.</div>
     );
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4">
+      {/* 타이틀 및 진행도 */}
+      <h2 className="text-3xl font-bold text-gray-800 mb-2 tracking-tight">없는게 없는 무도 게임</h2>
+      <div className="text-lg font-semibold text-gray-600 mb-4">
+        <span>진행 정도 : </span>
+        <span className="font-bold text-gray-900">
+          {progressCount} / {TOTAL_QUESTIONS}
+        </span>
+      </div>
+
       <div
-        className="relative w-full max-w-lg mx-auto border-2 border-black overflow-hidden"
+        className="relative w-full max-w-lg mx-auto border-2 border-black overflow-hidden rounded-md"
         style={{ aspectRatio: `${initialMap[0].length} / ${initialMap.length}` }}
       >
-        {/* 맵 렌더 */}
+        {/* 맵 타일 렌더링 부분 */}
         {currentMap.map((row, y) =>
           row.map((cell, x) => (
             <div
               key={`${x}-${y}`}
               className={`absolute w-[12.5%] min-w-[45px] aspect-square ${
-                cell.type === 'wall' ? 'bg-black' : cell.type === 'item' ? 'bg-yellow-500' : 'bg-white'
-              } border-t border-r border-gray-400`}
+                cell.type === 'wall' ? 'bg-gray-800' : 'bg-white'
+              } border-t border-r border-gray-300`}
               style={{
                 left: `${x * 12.5}%`,
                 top: `${y * (100 / initialMap.length)}%`,
                 minHeight: '45px',
               }}
-            />
+            >
+              {cell.type === 'item' && cell.itemImgPath && (
+                <img
+                  src={cell.itemImgPath}
+                  alt="아이템"
+                  className="w-full h-full object-cover animate-[float-y_2.5s_ease-in-out_infinite]"
+                />
+              )}
+            </div>
           )),
         )}
 
@@ -289,45 +379,112 @@ export default function StartGame1() {
           }}
         />
 
-        {/* 모달 */}
+        {/* 질문 모달 */}
         {showModal && selectedItemId && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
-            <div className="bg-white px-4 py-4 rounded-lg shadow-xl text-center flex flex-col gap-3">
-              <p className="text-[20px] text-left">
-                <span className="font-bold">회차</span> 무도를 부탁해
-              </p>
-              <img src={photos.find(p => p.id === selectedItemId)?.imgPath} alt="짤 이미지" />
+          <div className="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center z-20 p-4">
+            <div className="bg-white px-4 py-5 rounded-lg shadow-xl text-center flex flex-col gap-4 w-full max-w-sm">
+              <div className="flex items-center justify-start">
+                <span className="text-sm font-bold text-white bg-gray-700 px-3 py-1 rounded-full mr-3">회차</span>
+                <span className="text-lg font-semibold text-gray-800">무도를 부탁해</span>
+              </div>
+              <img
+                src={photos.find(p => p.id === selectedItemId)?.imgPath}
+                alt="짤 이미지"
+                className="w-full object-contain rounded-md border border-gray-200"
+              />
               <p
-                className={`text-sm font-bold ${feedbackMessage === '정답입니다!' ? 'text-green-600' : 'text-red-500'}`}
+                className={`text-base font-bold min-h-[1.5rem] ${
+                  feedbackMessage === '정답입니다!' ? 'text-green-600' : 'text-red-500'
+                }`}
               >
-                {feedbackMessage}
+                {feedbackMessage || ' '}
               </p>
-              <div className="flex gap-1 justify-center my-2">
+
+              {/* 오답일 경우 정답 표시 */}
+              {isAnswerRevealed && (
+                <p className="text-base font-semibold text-blue-600">
+                  {/* ◀ text-sm font-bold -> text-base font-semibold */}
+                  정답은: {photos.find(p => p.id === selectedItemId)?.title}
+                </p>
+              )}
+
+              <div className="flex gap-2 justify-center my-2 flex-wrap">
                 {photos
                   .find(p => p.id === selectedItemId)
                   ?.keyword?.split('')
                   .map((char, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-center w-4 h-4 border-gray-400 border p-2 text-black font-bold text-md shadow-md"
+                      className="flex items-center justify-center w-8 h-8 border-gray-300 border p-2 text-black font-bold text-lg shadow-sm rounded-md"
                     >
                       {char}
                     </div>
                   ))}
               </div>
+
               <input
-                className="w-full p-2 px-4 border-2 border-[#C8C8C8] rounded-md"
+                ref={inputRef}
+                onKeyDown={handleInputKeyDown}
+                disabled={isAnswerRevealed} // 오답 시 input 비활성화
+                className="w-full p-3 px-4 border-2 border-gray-300 rounded-lg disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                 type="text"
                 placeholder="정답을 입력해 주세요"
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
               />
-              <button
-                onClick={handleAnswerCheck}
-                className="bg-[#E6E9D8] text-[20px] text-black font-bold py-2 px-4 rounded-xl border-2 border-black"
-              >
-                정답확인
-              </button>
+
+              {/* 정답 확인 / 닫기 버튼 분기 처리 */}
+              {!isAnswerRevealed ? (
+                <button
+                  onClick={handleAnswerCheck}
+                  className="bg-[#E6E9D8] text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-800 hover:bg-yellow-200 active:bg-yellow-300 transition-colors"
+                >
+                  정답확인
+                </button>
+              ) : (
+                <button
+                  onClick={handleCloseModal}
+                  className="bg-gray-300 text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-500 hover:bg-gray-400 active:bg-gray-500 transition-colors"
+                >
+                  닫기
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 게임 종료 모달 */}
+        {showGameOverModal && (
+          <div className="absolute inset-0 bg-black bg-opacity-70 flex justify-center items-center z-30 p-4">
+            <div className="bg-white p-8 rounded-lg shadow-xl text-center flex flex-col gap-5 w-full max-w-sm">
+              <h3 className="text-3xl font-bold text-gray-900"> 게임 종료! </h3>
+
+              <p className="text-lg text-gray-700">
+                총 {TOTAL_QUESTIONS}문제 중에
+                <span className="font-bold text-blue-600 text-xl mx-1">{correctCount}</span>
+                문제를 맞췄습니다!
+              </p>
+              <img
+                src={
+                  correctCount <= 2 ? '/score_bad.jpeg' : correctCount <= 4 ? '/score_normal.jpg' : '/score_good.jpg'
+                }
+                alt="게임 결과"
+                className="w-full object-contain max-h-48 rounded-lg"
+              />
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-4">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="w-full sm:w-32 bg-gray-300 font-bold py-2 px-4 rounded-lg border-2 border-gray-500 hover:bg-gray-400 transition-colors"
+                >
+                  다시하기
+                </button>
+                <button
+                  onClick={() => navigate('/')}
+                  className="w-full sm:w-32 bg-[#E6E9D8] font-bold py-2 px-4 rounded-lg border-2 border-black hover:bg-yellow-100 transition-colors"
+                >
+                  홈으로 가기
+                </button>
+              </div>
             </div>
           </div>
         )}
