@@ -2,14 +2,20 @@ import { useState } from 'react';
 import Button from '../components/ui/Button';
 
 export default function useModal() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+
+  const body = document.querySelector('body') as HTMLElement;
 
   const openModal = (text: string) => {
     setIsOpen(true);
     setMessage(text);
+    body.style.overflow = 'hidden';
   };
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    body.style.overflow = 'auto';
+  };
 
   const Modal = () =>
     isOpen ? (
