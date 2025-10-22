@@ -37,7 +37,7 @@ export default function SequenceGameAnswer({
             placeholder="순서에 맞게 숫자만 입력해주세요. ex)123"
             maxLength={3}
           />
-          <Button type="submit" size="sm" onClick={onClickSumbit}>
+          <Button type="submit" styling="normal" size="sm" onClick={onClickSumbit}>
             제출
           </Button>
         </div>
@@ -57,7 +57,7 @@ export default function SequenceGameAnswer({
           <strong className="text-xs md:text-sm lg:text-base">
             {answerNum[0]} -&gt; {answerNum[1]} -&gt; {answerNum[2]}
           </strong>
-          <Button type="button" size="sm" onClick={onClickNext}>
+          <Button type="button" styling="normal" size="sm" onClick={onClickNext}>
             다음
           </Button>
         </div>

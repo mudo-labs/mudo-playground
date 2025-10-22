@@ -24,7 +24,8 @@ export default function SequenceHomeMember({ onClickChar, selectedChar }: Sequen
         key={i}
         className="
           relative cursor-pointer
-          hover:font-bold hover:before:absolute hover:before:-top-10 hover:before:left-1/2 hover:before:-translate-x-1/2 lg:hover:before:w-[1.875rem] lg:hover:before:h-[2.125rem]
+          hover:font-bold hover:before:absolute hover:before:-top-8 md:hover:before:-top-9 lg:hover:before:-top-10 hover:before:left-1/2 hover:before:-translate-x-1/2 
+          hover:before:w-[1.375rem] hoverbefore:h-[1.5625rem] md:hover:before:w-[1.625rem] md:hover:before:h-[1.875rem] lg:hover:before:w-[1.875rem] lg:hover:before:h-[2.125rem]
           hover:before:bg-[url('/images/char/mudori_f.png')] hover:before:bg-cover"
         onClick={onClickChar}
       >
