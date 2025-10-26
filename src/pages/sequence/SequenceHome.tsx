@@ -4,9 +4,11 @@ import Button from '../../components/ui/Button';
 import SequenceHomeText from './components/SequenceHomeText';
 import SequenceHomeMember from './components/SequenceHomeMember';
 import useModal from '../../hooks/useModal';
+import usePageTitle from '../../hooks/usePageTItle';
 
 export default function SequenceHome() {
   const navigate = useNavigate();
+  usePageTitle('무도 짤 순서 맞추기 게임');
   const [selectedChar, setSelectedChar] = useState<string>(''); // 선택된 멤버 상태
 
   const onClickChar = (e: React.MouseEvent<HTMLLIElement>) => {

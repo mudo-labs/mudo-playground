@@ -12,8 +12,8 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
       // 문제 푸는 중
       return (
         <li key={i} className="flex-1">
-          <figure className="flex flex-col justify-between items-center h-full">
-            <div className="relative">
+          <figure className="flex flex-col justify-between items-start h-full">
+            <div className="relative w-full min-h-[9.375rem] md:min-h-[12.9375rem] lg:min-h-[16.5rem] xl:min-h-[26.5rem]">
               <img
                 src={item.imgPath}
                 alt={`${i + 1}번 문제 사진`}
@@ -31,7 +31,7 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
       // 답변 제출 상태 (답(회차정보) 표출)
       return (
         <li key={i} className="flex-1">
-          <figure className="flex flex-col justify-between items-center gap-2 h-full md:flex-col md:gap-7">
+          <figure className="flex flex-row justify-between items-center gap-2 h-full md:flex-col md:gap-7">
             <div className="relative w-[60%] md:w-auto">
               <img
                 src={item.imgPath}
@@ -42,7 +42,7 @@ export default function SequenceGameQuiz({ currentPhotos, isSolving }: SequenceG
                 {i + 1}
               </span>
             </div>
-            <figcaption className="font-medium text-center leading-[1.2] md:leading-normal lg:base">
+            <figcaption className="w-[40%] font-medium text-center leading-[1.2] md:w-auto md:leading-normal lg:base">
               <p className="text-xs md:text-sm lg:text-base">
                 {item.episodeNum}회 ({item.episodeDate})
               </p>
