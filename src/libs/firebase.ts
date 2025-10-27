@@ -20,7 +20,6 @@ const firebaseConfig = {
 // Initialize Firebase
 // 중복 초기화 방지 (HMR 대응)
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-console.log('Firebase 연결 성공:', app);
 const db = getFirestore(app);
 
 // Analytics는 지원 환경에서만 실행
