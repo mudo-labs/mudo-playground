@@ -27,7 +27,7 @@ export default function SequenceGameAnswer({
   return (
     <>
       {isSolving ? (
-        <div className="flex justify-center items-center mt-10 gap-5 md:mt-[6.25rem] md:gap-6 lg:mt-[9.375rem] lg:gap-7.5">
+        <div className="flex justify-center items-center mt-10 gap-5 md:mt-[6.25rem] md:gap-6 lg:mt-[6.25rem] lg:gap-7.5 :mt-[9.375rem]">
           <input
             type="text"
             ref={inputRef}
@@ -53,7 +53,11 @@ export default function SequenceGameAnswer({
         </div>
       ) : (
         <div className="flex flex-col items-center gap-3 mt-5 md:gap-4 md:mt-12 lg:mt-16 lg:gap-6">
-          <p className="text-xs md:text-sm lg:text-base">{isCorrect ? '정답!' : '오답!'}</p>
+          {isCorrect ? (
+            <p className="text-xs font-bold text-blue-600 md:text-sm lg:text-base">정답!</p>
+          ) : (
+            <p className="text-xs font-bold text-red-700 md:text-sm lg:text-base">오답!</p>
+          )}
           <strong className="text-xs md:text-sm lg:text-base">
             {answerNum[0]} -&gt; {answerNum[1]} -&gt; {answerNum[2]}
           </strong>
