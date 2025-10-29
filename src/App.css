@@ -1,3 +1,171 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Pretendard 폰트 */
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 900;
+  font-display: swap;
+  src:
+    local('Pretendard Black'),
+    url('/fonts/Pretendard-Black.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-display: swap;
+  src:
+    local('Pretendard ExtraBold'),
+    url('/fonts/Pretendard-ExtraBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('Pretendard Bold'),
+    url('/fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local('Pretendard SemiBold'),
+    url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local('Pretendard Medium'),
+    url('/fonts/Pretendard-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Pretendard Regular'),
+    url('/fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local('Pretendard Light'),
+    url('/fonts/Pretendard-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 200;
+  font-display: swap;
+  src:
+    local('Pretendard ExtraLight'),
+    url('/fonts/Pretendard-ExtraLight.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 100;
+  font-display: swap;
+  src:
+    local('Pretendard Thin'),
+    url('/fonts/Pretendard-Thin.woff2') format('woff2');
+}
+
+/* Jaro 폰트 (영문) */
+@font-face {
+  font-family: 'Jaro';
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('Jaro Regular'),
+    url('/fonts/Jaro-Regular.woff') format('woff');
+}
+
+body {
+  /* 기본 폰트 선언 */
+  font-family: 'Pretendard', sans-serif;
+
+  word-break: keep-all;
+  overflow-x: hidden;
+}
+
+/* Jaro 폰트 (영문) */
+.jaro {
+  font-family: 'Jaro', sans-serif;
+}
+
+.view-box {
+  overflow: hidden; /* movingImgs가 바깥으로 나가도 스크롤 안 생기게 */
+  /* height: 100vh; pin 시 충분한 세로 공간 */
+  position: relative;
+}
+
+/* Home 에서 마우스 아이콘 움직이는 애니메이션 */
+.mouse-ico > span {
+  animation: 1s ease mouseWheel infinite;
+}
+
+@keyframes mouseWheel {
+  0% {
+    top: 0.25rem;
+  }
+  50% {
+    top: 0.5rem;
+  }
+  100% {
+    top: 0.25rem;
+  }
+}
+
+/* 홈의 컨텐츠 블럭 움직임 */
+.content > ul li.active {
+  transform: skewX(0) skewY(0) translate(-50%, -180%);
+}
+
+@media (min-width: 1280px) {
+  .content > ul li.active {
+    transform: skewX(0) skewY(0) translate(-50%, -160%);
+  }
+}
+
+/* 짤 순서 맞추기 게임에서 멤버 선택 깜박이는 애니메이션*/
+.blink {
+  animation: 1.3s ease blink infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(-5%);
+    }
+    50% {
+      transform: translateY(8%);
+    }
+  }
+}
