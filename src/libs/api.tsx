@@ -1,11 +1,12 @@
 // Firestore에서 사진 데이터 한 번만 가져오는 커스텀 훅
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from './firebase';
 
 export interface Images {
   id: string;
   imgPath: string;
+  gameImgPath: string;
   title: string;
   tags: string[];
   cast: string[];
@@ -13,6 +14,11 @@ export interface Images {
   episodeNum: number;
   episodeDate: string;
   episodeName: string;
+}
+
+export interface TagCount {
+  name: string;
+  count: number;
 }
 
 export function usePhotos() {
@@ -42,6 +48,43 @@ export function usePhotos() {
 
   return { photos, loading, error };
 }
+
+export const usePopularTags = (count: number = 30) => {
+  const [tags, setTags] = useState<TagCount[]>([]);
+  // loading과 error 상태 추가
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        setLoading(true); // 로딩 시작
+        setError(null);
+
+        const tagsCollection = collection(db, 'tagCounts');
+        const q = query(tagsCollection, orderBy('count', 'desc'), limit(count));
+
+        const querySnapshot = await getDocs(q);
+        const tagList = querySnapshot.docs.map(doc => ({
+          name: doc.id,
+          count: doc.data().count,
+        }));
+
+        setTags(tagList);
+      } catch (err) {
+        console.error('인기 태그 로딩 실패:', err);
+        setError(err as Error); // 에러 설정
+      } finally {
+        setLoading(false); // 로딩 종료
+      }
+    };
+
+    fetchTags();
+  }, [count]);
+
+  // tags, loading, error 모두 반환
+  return { tags, loading, error };
+};
 
 /**
  * 이 파일 구조와 사용법 안내:

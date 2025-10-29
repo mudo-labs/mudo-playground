@@ -2,6 +2,7 @@ import { useSetAtom } from 'jotai';
 import { useState, useEffect } from 'react';
 import { selectedCharaterAtom } from '../atoms/characterStore';
 import { useNavigate } from 'react-router-dom';
+import usePageTitle from '../hooks/usePageTItle';
 
 const characters = [
   { src: '/images/char/Gill.png', alt: '길' },
@@ -13,32 +14,59 @@ const characters = [
   { src: '/images/char/nohong.png', alt: '노홍철' },
 ];
 
-export default function Game1() {
+export default function GuessMudo() {
+  usePageTitle('없는게 없는 무도 게임');
+
   const [focusedIndex, setFocusedIndex] = useState(3);
 
   const setSelectedCharacter = useSetAtom(selectedCharaterAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
+    let startX = 0;
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
-        setFocusedIndex(prevIndex => Math.max(0, prevIndex - 1));
+        setFocusedIndex(prev => Math.max(0, prev - 1));
       } else if (e.key === 'ArrowRight') {
-        setFocusedIndex(prevIndex => Math.min(characters.length - 1, prevIndex + 1));
+        setFocusedIndex(prev => Math.min(characters.length - 1, prev + 1));
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    const handleTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+    };
 
+    const handleTouchEnd = (e: TouchEvent) => {
+      const endX = e.changedTouches[0].clientX;
+      const dx = endX - startX;
+
+      if (dx > 30) {
+        // 오른쪽 스와이프 → 오른쪽 캐릭터
+        setFocusedIndex(prev => Math.min(characters.length - 1, prev + 1));
+      } else if (dx < -30) {
+        // 왼쪽 스와이프 → 왼쪽 캐릭터
+        setFocusedIndex(prev => Math.max(0, prev - 1));
+      }
+    };
+
+    // 이벤트 등록
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    // 정리
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
   const handleStartGame = () => {
     const selectedCharacter = characters[focusedIndex].alt;
     setSelectedCharacter(selectedCharacter);
-    navigate('/StartGame1');
+    navigate('/StartGuessMudo');
   };
 
   return (
@@ -46,9 +74,6 @@ export default function Game1() {
       <div className=" min-w-[360px] min-h-screen flex flex-col justify-between">
         {/* 상단 섹션 */}
         <div>
-          <div className="w-8 h-8 bg-white absolute top-4 left-4 rounded-[8px] flex justify-center items-center shadow-md shadow-[#C8C8C8]">
-            <img src="/images/vector/speaker.png" alt="스피커 아이콘" />
-          </div>
           <div className="pt-[180px]">
             <h1 className="text-[36px] text-center font-semibold">없는 게 없는 무도 게임</h1>
             <p className="text-[16px] text-center">선택한 캐릭터와 관련된 짤을 보고 정답을 맞혀보세요!</p>
