@@ -3,6 +3,8 @@ import { usePhotos } from '../libs/api';
 import { selectedCharaterAtom } from '../atoms/characterStore';
 import { useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router-dom';
+import { Volume2, VolumeX } from 'lucide-react';
+import usePageTitle from '../hooks/usePageTItle';
 
 type Tile = {
   type: 'path' | 'wall' | 'item';
@@ -129,6 +131,10 @@ const directions: Record<string, [number, number]> = {
   ArrowDown: [0, 1],
   ArrowLeft: [-1, 0],
   ArrowRight: [1, 0],
+  up: [0, -1],
+  down: [0, 1],
+  left: [-1, 0],
+  right: [1, 0],
 };
 
 const TOTAL_QUESTIONS = 5;
@@ -141,7 +147,8 @@ const ITEM_IMAGE_PATHS = [
   '/images/logo/Frame-5.png',
 ];
 
-export default function StartGame1() {
+export default function StartGuessMudo() {
+  usePageTitle('없는게 없는 무도 게임');
   const [position, setPosition] = useState<[number, number]>([0, 10]);
   const [offset, setOffset] = useState<[number, number]>([0, 0]);
   const [moving, setMoving] = useState(false);
@@ -159,14 +166,81 @@ export default function StartGame1() {
   // 오답 시 정답 공개를 위한 상태
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
+  const [isMuted, setIsMuted] = useState(false); //bgm on/off 상태 관리
+
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const mainAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const selectedCharacter = useAtomValue(selectedCharaterAtom);
   const { photos, loading, error } = usePhotos();
 
+  const handleToggleMute = () => {
+    setIsMuted(prevMuted => {
+      const newMutedState = !prevMuted;
+
+      if (mainAudioRef.current) {
+        mainAudioRef.current.muted = newMutedState;
+      }
+
+      return newMutedState;
+    });
+  };
+
   useEffect(() => {
-    // 새로고침 시 selectedCharacter가 없을 경우 대비
+    // 1. 오디오 객체 생성
+    const startAudio = new Audio('/game_start.mp3');
+    const mainAudio = new Audio('/game_progress.mp3');
+
+    startAudio.muted = isMuted;
+    mainAudio.muted = isMuted;
+
+    // 2. 메인 BGM 설정
+    mainAudio.loop = true;
+    mainAudio.volume = 0.3;
+    mainAudioRef.current = mainAudio;
+
+    let isMounted = true;
+
+    const playSoundSequence = async () => {
+      try {
+        await startAudio.play();
+        await new Promise<void>(resolve => {
+          startAudio.onended = () => resolve();
+        });
+
+        if (isMounted) {
+          mainAudio.play().catch(e => console.warn('Main BGM 재생 실패:', e));
+        }
+      } catch (error) {
+        console.warn('Start BGM 재생 실패:', error);
+        if (isMounted) {
+          mainAudio.play().catch(e => console.warn('Main BGM 재생 실패:', e));
+        }
+      }
+    };
+
+    playSoundSequence();
+
+    return () => {
+      isMounted = false;
+      startAudio.pause();
+      startAudio.currentTime = 0;
+
+      if (mainAudioRef.current) {
+        mainAudioRef.current.pause();
+        mainAudioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (showGameOverModal && mainAudioRef.current) {
+      mainAudioRef.current.pause();
+    }
+  }, [showGameOverModal]);
+
+  useEffect(() => {
     if (!photos.length || !selectedCharacter) return;
 
     const newMap = currentMap.map(row => [...row]);
@@ -190,6 +264,90 @@ export default function StartGame1() {
     setCurrentMap(newMap);
   }, [photos, selectedCharacter]);
 
+  // ----- 캐릭터 이동 -----
+  const moveCharacter = (dx: number, dy: number) => {
+    if (moving || showModal || showGameOverModal) return;
+    const [x, y] = position;
+    const newX = x + dx;
+    const newY = y + dy;
+    if (newY < 0 || newY >= currentMap.length || newX < 0 || newX >= currentMap[0].length) return;
+
+    const nextTile = currentMap[newY][newX];
+    if (nextTile.type === 'wall') return;
+
+    // 방향 설정
+    if (dy === -1) setCharDirect('/images/char/mudori_b.png');
+    else if (dy === 1) setCharDirect('/images/char/mudori_f.png');
+    else if (dx === -1) setCharDirect('/images/char/mudori_l.png');
+    else if (dx === 1) setCharDirect('/images/char/mudori_r.png');
+
+    setMoving(true);
+    let step = 0;
+    const steps = 10;
+    const interval = setInterval(() => {
+      step++;
+      setOffset([dx * (step / steps) * 100, dy * (step / steps) * 100]);
+      if (step === steps) {
+        clearInterval(interval);
+        setOffset([0, 0]);
+        setPosition([newX, newY]);
+        if (nextTile.type === 'item' && nextTile.itemId) {
+          setSelectedItemId(nextTile.itemId);
+          setShowModal(true);
+        }
+        setMoving(false);
+      }
+    }, 5);
+  };
+
+  const handleKeyDown = (e: { key: string }) => {
+    const dir = directions[e.key];
+    if (!dir) return;
+    const [dx, dy] = dir;
+    moveCharacter(dx, dy);
+  };
+
+  // 키보드 이벤트
+  useEffect(() => {
+    const listener = (e: KeyboardEvent) => handleKeyDown({ key: e.key });
+    window.addEventListener('keydown', listener);
+    return () => window.removeEventListener('keydown', listener);
+  }, [position, moving, showModal, showGameOverModal, currentMap]);
+
+  // 모바일 스와이프 이벤트
+  useEffect(() => {
+    let startX = 0;
+    let startY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const dx = endX - startX;
+      const dy = endY - startY;
+
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 30) moveCharacter(1, 0);
+        else if (dx < -30) moveCharacter(-1, 0);
+      } else {
+        if (dy > 30) moveCharacter(0, 1);
+        else if (dy < -30) moveCharacter(0, -1);
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [position, moving, showModal, showGameOverModal, currentMap]);
+
   const handleCloseModal = () => {
     if (selectedItemId) {
       const newMap = currentMap.map(row =>
@@ -197,16 +355,13 @@ export default function StartGame1() {
       );
       setCurrentMap(newMap);
 
-      if (isAnswerRevealed) {
-        const newProgressCount = progressCount + 1;
-        setProgressCount(newProgressCount);
-
-        if (newProgressCount === TOTAL_QUESTIONS) {
-          setShowGameOverModal(true);
-        }
+      const newProgressCount = progressCount;
+      if (newProgressCount === TOTAL_QUESTIONS) {
+        setShowGameOverModal(true);
       }
     }
 
+    // 모달 초기화
     setShowModal(false);
     setSelectedItemId(null);
     setInputValue('');
@@ -226,26 +381,23 @@ export default function StartGame1() {
         .replace(/\s/g, '')
         .replace(/[.,!?'"()]/g, '');
 
-    if (normalize(inputValue) === normalize(selectedQuestion.title)) {
+    const isCorrect = normalize(inputValue) === normalize(selectedQuestion.title);
+
+    //진행 정도는 맞든 틀리든 증가
+    const newProgressCount = progressCount + 1;
+    setProgressCount(newProgressCount);
+
+    if (isCorrect) {
       setFeedbackMessage('정답입니다!');
-
-      const newCount = correctCount + 1;
-      setCorrectCount(newCount);
-
-      const newProgressCount = progressCount + 1;
-      setProgressCount(newProgressCount);
-
-      if (newProgressCount === TOTAL_QUESTIONS) {
-        setTimeout(() => {
-          handleCloseModal();
-          setShowGameOverModal(true);
-        }, 1000);
-      } else {
-        setTimeout(handleCloseModal, 1000);
-      }
+      setCorrectCount(prev => prev + 1);
     } else {
       setFeedbackMessage('오답입니다.');
-      setIsAnswerRevealed(true);
+    }
+
+    setIsAnswerRevealed(true);
+
+    if (newProgressCount === TOTAL_QUESTIONS) {
+      setTimeout(() => setShowGameOverModal(true), 500);
     }
   };
 
@@ -268,52 +420,6 @@ export default function StartGame1() {
     }
   };
 
-  // 캐릭터 이동 로직 (키보드 이벤트)
-  useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (moving || showModal || showGameOverModal) return;
-      const dir = directions[e.key];
-      if (!dir) return;
-
-      const [dx, dy] = dir;
-      if (e.key === 'ArrowUp') setCharDirect('/images/char/mudori_b.png');
-      else if (e.key === 'ArrowDown') setCharDirect('/images/char/mudori_f.png');
-      else if (e.key === 'ArrowLeft') setCharDirect('/images/char/mudori_l.png');
-      else if (e.key === 'ArrowRight') setCharDirect('/images/char/mudori_r.png');
-
-      const [x, y] = position;
-      const newX = x + dx;
-      const newY = y + dy;
-      if (newY < 0 || newY >= currentMap.length || newX < 0 || newX >= currentMap[0].length) return;
-
-      const nextTile = currentMap[newY][newX];
-      if (nextTile.type === 'wall') return;
-
-      setMoving(true);
-      let step = 0;
-      const steps = 10;
-      const interval = setInterval(() => {
-        step++;
-        setOffset([dx * (step / steps) * 100, dy * (step / steps) * 100]);
-        if (step === steps) {
-          clearInterval(interval);
-          setOffset([0, 0]);
-          setPosition([newX, newY]);
-
-          // 아이템 타일 도착 시 모달 띄우기
-          if (nextTile.type === 'item' && nextTile.itemId) {
-            setSelectedItemId(nextTile.itemId);
-            setShowModal(true);
-          }
-          setMoving(false);
-        }
-      }, 5);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [position, moving, showModal, showGameOverModal, currentMap]);
-
   if (loading)
     return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-white p-4">
@@ -330,6 +436,13 @@ export default function StartGame1() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-4">
+      <button
+        onClick={handleToggleMute}
+        className="w-8 h-8 bg-white absolute top-4 right-4 rounded-[8px] flex justify-center items-center shadow-md shadow-[#C8C8C8] z-10" // z-10 추가 (모달보다 뒤, 맵보다 위)
+        aria-label={isMuted ? '소리 켜기' : '소리 끄기'}
+      >
+        {isMuted ? <VolumeX size={20} className="text-gray-700" /> : <Volume2 size={20} className="text-gray-700" />}
+      </button>
       {/* 타이틀 및 진행도 */}
       <h2 className="text-3xl font-bold text-gray-800 mb-2 tracking-tight">없는게 없는 무도 게임</h2>
       <div className="text-lg font-semibold text-gray-600 mb-4">
@@ -381,17 +494,27 @@ export default function StartGame1() {
 
         {/* 질문 모달 */}
         {showModal && selectedItemId && (
-          <div className="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center z-20 p-4">
-            <div className="bg-white px-4 py-5 rounded-lg shadow-xl text-center flex flex-col gap-4 w-full max-w-sm">
+          <div className="absolute inset-0 bg-black bg-opacity-60 flex justify-center items-center z-20 p-2">
+            <div
+              className="bg-white px-4 py-5 rounded-lg shadow-xl text-center flex flex-col gap-4 w-full max-w-sm
+                  max-h-[70vh] overflow-y-auto"
+            >
               <div className="flex items-center justify-start">
                 <span className="text-sm font-bold text-white bg-gray-700 px-3 py-1 rounded-full mr-3">회차</span>
                 <span className="text-lg font-semibold text-gray-800">무도를 부탁해</span>
               </div>
+
+              {/* 이미지 경로 선택 */}
               <img
-                src={photos.find(p => p.id === selectedItemId)?.imgPath}
-                alt="짤 이미지"
-                className="w-full object-contain rounded-md border border-gray-200"
+                src={
+                  isAnswerRevealed
+                    ? photos.find(p => p.id === selectedItemId)?.imgPath
+                    : photos.find(p => p.id === selectedItemId)?.gameImgPath
+                }
+                alt="문제 이미지"
+                className="w-full sm:w-auto max-h-[40vh] sm:max-h-[40vh] object-contain rounded-md border border-gray-200 mx-auto"
               />
+
               <p
                 className={`text-base font-bold min-h-[1.5rem] ${
                   feedbackMessage === '정답입니다!' ? 'text-green-600' : 'text-red-500'
@@ -400,10 +523,9 @@ export default function StartGame1() {
                 {feedbackMessage || ' '}
               </p>
 
-              {/* 오답일 경우 정답 표시 */}
+              {/* 오답일 경우 혹은 정답 공개 */}
               {isAnswerRevealed && (
                 <p className="text-base font-semibold text-blue-600">
-                  {/* ◀ text-sm font-bold -> text-base font-semibold */}
                   정답은: {photos.find(p => p.id === selectedItemId)?.title}
                 </p>
               )}
@@ -425,7 +547,7 @@ export default function StartGame1() {
               <input
                 ref={inputRef}
                 onKeyDown={handleInputKeyDown}
-                disabled={isAnswerRevealed} // 오답 시 input 비활성화
+                disabled={isAnswerRevealed}
                 className="w-full p-3 px-4 border-2 border-gray-300 rounded-lg disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
                 type="text"
                 placeholder="정답을 입력해 주세요"
@@ -444,7 +566,7 @@ export default function StartGame1() {
               ) : (
                 <button
                   onClick={handleCloseModal}
-                  className="bg-gray-300 text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-500 hover:bg-gray-400 active:bg-gray-500 transition-colors"
+                  className="bg-gray-300 text-xl text-black font-bold py-3 px-4 rounded-xl border-2 border-gray-500 hover:bg-gray-400 transition-colors"
                 >
                   닫기
                 </button>

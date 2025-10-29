@@ -2,6 +2,32 @@ import { Download, X } from 'lucide-react';
 import type { Images } from '../libs/api';
 import { useCallback, useRef, useState } from 'react';
 
+const GalleryImageLoader = ({ src, alt }: { src: string; alt: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="relative h-full w-full">
+      {/* 스켈레톤 플레이스홀더 */}
+      <div
+        className={`absolute inset-0 bg-gray-200 animate-pulse transition-opacity duration-500 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+
+      {/* 실제 이미지 */}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+};
+
 const animationStyles = `
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -25,17 +51,6 @@ interface MudoGalleryProps {
   hasMore: boolean;
   isVisible: boolean;
 }
-
-const masonryContainerStyle: React.CSSProperties = {
-  columnCount: 3, // 3단 레이아웃
-  columnGap: '1rem',
-};
-
-const masonryItemStyle: React.CSSProperties = {
-  breakInside: 'avoid',
-  marginBottom: '1rem',
-  position: 'relative',
-};
 
 const MudoGallery = ({ photos, loadMore, hasMore, isVisible }: MudoGalleryProps) => {
   const [selectedPhoto, setSelectedPhoto] = useState<Images | null>(null);
@@ -88,20 +103,20 @@ const MudoGallery = ({ photos, loadMore, hasMore, isVisible }: MudoGalleryProps)
 
       {/* 갤러리 본문 */}
       <div
-        style={masonryContainerStyle}
-        className={`transition-opacity duration-500 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 transition-opacity duration-500 ease-in-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
       >
         {photos.map((photo, index) => {
           const isLastElement = index === photos.length - 1;
           return (
             <div
               key={photo.id}
-              style={masonryItemStyle}
-              className="group relative cursor-pointer overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl"
+              className="group relative cursor-pointer overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl aspect-square"
               onClick={() => handleOpenModal(photo)}
               ref={isLastElement ? lastElementRef : null}
             >
-              <img src={photo.imgPath} alt={photo.title} loading="lazy" className="block h-auto w-full" />
+              <GalleryImageLoader src={photo.imgPath} alt={photo.title} />
               <div className="absolute inset-0 flex items-center justify-center bg-black/60 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <p className="text-center font-semibold text-white">{photo.title}</p>
               </div>

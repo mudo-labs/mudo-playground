@@ -220,7 +220,7 @@ export default function Home() {
           <ul className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <li
               data-content-name="없는게 없는 무도 게임"
-              data-content-url="/game1"
+              data-content-url="/GuessMudo"
               onClick={changeTitle}
               className="absolute top-1/2 left-1/2 -translate-x-[150%] translate-y-[70%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[15deg] skew-y-[7deg] bg-[url('/thumbnail-1.jpg')] bg-cover shadow-xl cursor-pointer md:-translate-x-[220%] md:translate-y-[30%] md:w-[9.375rem] lg:-translate-x-[280%] lg:-translate-y-[20%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
@@ -231,10 +231,10 @@ export default function Home() {
               className="absolute top-1/2 left-1/2 translate-x-[50%] translate-y-[105%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[3deg] skew-y-[-20deg] bg-[url('/thumbnail-2.jpg')] bg-cover shadow-xl cursor-pointer md:translate-x-[130%] md:translate-y-[65%] md:w-[9.375rem] lg:translate-x-[170%] lg:translate-y-[10%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
             <li
-              data-content-name="컨텐츠 3"
-              data-content-url="javascript:void(0)"
+              data-content-name="무도 짤 갤러리"
+              data-content-url="/Search"
               onClick={changeTitle}
-              className="absolute top-1/2 left-1/2 -translate-x-[65%] translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[6deg] skew-y-[8deg] bg-light-gray shadow-xl cursor-pointer md:-translate-x-[52%] md:translate-y-[120%] md:w-[9.375rem] lg:-translate-x-[72%] lg:translate-y-[62%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
+              className="absolute top-1/2 left-1/2 -translate-x-[65%] translate-y-[230%] w-[6.25rem] aspect-square rounded-[1.25rem] skew-x-[6deg] skew-y-[8deg] bg-[url('/thumbnail-3.jpg')] bg-cover shadow-xl cursor-pointer md:-translate-x-[52%] md:translate-y-[120%] md:w-[9.375rem] lg:-translate-x-[72%] lg:translate-y-[62%] lg:w-[12.5rem] transition-all duration-500 md:hover:skew-x-0 md:hover:skew-y-0"
             ></li>
           </ul>
         </div>
