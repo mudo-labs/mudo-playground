@@ -34,7 +34,7 @@ export default function SequenceEnd() {
   }
   return (
     <div className="mx-auto min-h-dvh flex flex-col justify-center items-center gap-[1.875rem] md:gap-[2.5rem] w-full px-4 md:px-8 lg:px-0 lg:max-w-[68.75rem] lg:gap-[3.125rem] xl:max-w-[120rem]">
-      <img src={resultImgSrc} alt="결과 이미지" className="max-h-[25rem] md:max-h-[28.125rem] lg:max-h-[31.25rem]" />
+      <img src={resultImgSrc} alt="결과 이미지" className="max-h-[25rem] md:max-h-[50vh]" />
       <div className="text-center">
         <strong className="font-normal lg:text-xl">
           5문제 중 <span className="font-bold text-dark-red">{correctNum}개</span> 맞혔습니다.
