@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mudo-playground.vercel.app/</loc>
+  </url>
+  <url>
+    <loc>https://mudo-playground.vercel.app/GuessMudo</loc>
+  </url>
+  <url>
+    <loc>https://mudo-playground.vercel.app/Search</loc>
+  </url>
+  <url>
+    <loc>https://mudo-playground.vercel.app/sequenceHome</loc>
+  </url>
+</urlset>

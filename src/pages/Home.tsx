@@ -162,7 +162,7 @@ export default function Home() {
   });
 
   return (
-    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/src/assets/home/main-bg.jpg')] bg-center bg-cover text-white">
+    <div className="view-box relative w-dvw h-dvh flex items-center bg-[url('/src/assets/home/main-bg.webp')] bg-center bg-cover text-white">
       {/* moving-imgs */}
       <div className="moving-imgs">
         <div className="flex flex-nowrap gap-[25%] items-center">

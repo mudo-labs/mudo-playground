@@ -1,16 +1,16 @@
-import movingImg1 from '../assets/home/moving-img-1.jpg';
-import movingImg2 from '../assets/home/moving-img-2.jpg';
-import movingImg3 from '../assets/home/moving-img-3.jpg';
-import movingImg4 from '../assets/home/moving-img-4.jpg';
-import movingImg5 from '../assets/home/moving-img-5.jpg';
-import movingImg6 from '../assets/home/moving-img-6.jpg';
-import movingImg7 from '../assets/home/moving-img-7.jpg';
-import movingImg8 from '../assets/home/moving-img-8.jpg';
-import movingImg9 from '../assets/home/moving-img-9.jpg';
-import movingImg10 from '../assets/home/moving-img-10.jpg';
-import movingImg11 from '../assets/home/moving-img-11.png';
-import movingImg12 from '../assets/home/moving-img-12.jpg';
-import movingImg13 from '../assets/home/moving-img-13.jpg';
+import movingImg1 from '../assets/home/moving-img-1.webp';
+import movingImg2 from '../assets/home/moving-img-2.webp';
+import movingImg3 from '../assets/home/moving-img-3.webp';
+import movingImg4 from '../assets/home/moving-img-4.webp';
+import movingImg5 from '../assets/home/moving-img-5.webp';
+import movingImg6 from '../assets/home/moving-img-6.webp';
+import movingImg7 from '../assets/home/moving-img-7.webp';
+import movingImg8 from '../assets/home/moving-img-8.webp';
+import movingImg9 from '../assets/home/moving-img-9.webp';
+import movingImg10 from '../assets/home/moving-img-10.webp';
+import movingImg11 from '../assets/home/moving-img-11.webp';
+import movingImg12 from '../assets/home/moving-img-12.webp';
+import movingImg13 from '../assets/home/moving-img-13.webp';
 
 export function homeMovingImage(movingImgNum: number) {
   switch (movingImgNum) {
