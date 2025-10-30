@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { selectedCharaterAtom } from '../atoms/characterStore';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../hooks/usePageTItle';
+import { HandIcon } from 'lucide-react';
 
 const characters = [
   { src: '/images/char/Gill.png', alt: '길' },
@@ -91,6 +92,13 @@ export default function GuessMudo() {
                 <p className="mt-2 text-center text-sm font-bold">{char.alt}</p>
               </div>
             ))}
+          </div>
+          <div className="flex flex-col items-center justify-center mt-10 md:hidden">
+            <div className="relative flex items-center justify-center">
+              <HandIcon className="w-8 h-8 text-yellow-500 animate-[swipe_1.8s_ease-in-out_infinite]" />
+            </div>
+
+            <p className="mt-3 text-sm font-semibold text-gray-600">좌우로 스와이프하여 캐릭터를 선택해주세요!</p>
           </div>
         </div>
 
